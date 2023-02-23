@@ -34,7 +34,7 @@ class MainBody extends Component {
             <p>
               Not satisfied with your purchase? No worries. We have a 30-day
               return policy. Just contact our customer support and we will take
-              care of the rest.
+              care of the rest.Contact our support team for more information.
             </p>
           </div>
         </div>
