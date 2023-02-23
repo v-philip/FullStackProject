@@ -28,10 +28,7 @@ export default class App extends Component {
     return (
       <BrowserRouter>
         <Switch>
-          
           <Route exact path="/" component={Page} />
-          
-          
         </Switch>
       </BrowserRouter>
     );
