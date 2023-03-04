@@ -13,8 +13,7 @@ export default class ResetDatabase extends Component
         super(props)
         
         this.state = {   
-            isReset:false,
-            res:null
+            isReset:false
         } 
     }
     
@@ -29,38 +28,24 @@ export default class ResetDatabase extends Component
     {
         axios.post(`${SERVER_HOST}/users/reset_user_collection`)
         .then(res => 
-        {     
-            if(res.data)
-            {
-                if (res.data.errorMessage)
-                {
-                    console.log(res.data.errorMessage)    
-                }
-                else // user successfully reset the User collection
-                { 
-                    console.log("User collection reset")
+        {      
+            console.log("User collection reset")
                     
-                    localStorage.clear()
-                }        
-            }
-            else
-            {
-                console.log("Failed to reset User collection")
-            }
-            
+            localStorage.clear()
+             
             this.setState({isReset:true})
         })   
+        .catch(err =>
+        {
+            // do nothing    
+        })
     }
 
 
 
     render() 
-    { fetch('https://dummyjson.com/products')
-    .then(res => console.log(res.json()))
-    
-    
+    { 
         return (
-            
             <form className="form-container" noValidate = {true} id = "loginOrRegistrationForm">
 
                {this.state.isReset ? <Redirect to="/DisplayAllCars"/> : null} 

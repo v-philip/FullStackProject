@@ -21,23 +21,12 @@ export default class DeleteCar extends Component
     {   
         axios.delete(`${SERVER_HOST}/cars/${this.props.match.params.id}`, {headers:{"authorization":localStorage.token}})
         .then(res => 
+        {            
+            this.setState({redirectToDisplayAllCars:true})            
+        })
+        .catch(err =>
         {
-            if(res.data)
-            {
-                if (res.data.errorMessage)
-                {
-                    console.log(res.data.errorMessage)    
-                }
-                else // success
-                { 
-                    console.log("Record deleted")
-                }
-                this.setState({redirectToDisplayAllCars:true})
-            }
-            else 
-            {
-                console.log("Record not deleted")
-            }
+            // Do nothing
         })
     }
   

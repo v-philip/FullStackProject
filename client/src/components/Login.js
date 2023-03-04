@@ -15,7 +15,8 @@ export default class Login extends Component
         this.state = {
             email:"",
             password:"",
-            isLoggedIn:false
+            isLoggedIn:false,
+            wasSubmittedAtLeastOnce:false
         }
     }
         
@@ -31,38 +32,35 @@ export default class Login extends Component
         axios.post(`${SERVER_HOST}/users/login/${this.state.email}/${this.state.password}`)
         .then(res => 
         {     
-            if(res.data)
-            {
-                if (res.data.errorMessage)
-                {
-                    console.log(res.data.errorMessage)    
-                }
-                else // user successfully logged in
-                { 
-                    console.log("User logged in")
+            localStorage.name = res.data.name
+            localStorage.accessLevel = res.data.accessLevel
+            localStorage.profilePhoto = res.data.profilePhoto                        
+            localStorage.token = res.data.token
                     
-                    localStorage.name = res.data.name
-                    localStorage.accessLevel = res.data.accessLevel  
-                    localStorage.token = res.data.token
-                    
-                    this.setState({isLoggedIn:true})
-                }        
-            }
-            else
-            {
-                console.log("Login failed")
-            }
-        })                
+            this.setState({isLoggedIn:true})
+        }) 
+        .catch(err =>
+        {
+            this.setState({wasSubmittedAtLeastOnce: true})
+        })
     }
 
 
     render()
-    {            
+    {         
+        let errorMessage = "";
+        if(this.state.wasSubmittedAtLeastOnce)
+        {
+            errorMessage = <div className="error">Login Details are incorrect<br/></div>;
+        }
+        
         return (
             <form className="form-container" noValidate = {true} id = "loginOrRegistrationForm">
                 <h2>Login</h2>
                 
-                {this.state.isLoggedIn ? <Redirect to="/DisplayAllCars"/> : null} 
+                {this.state.isLoggedIn ? <Redirect to="/ProductPage"/> : null} 
+                
+                {errorMessage}
                 
                 <input 
                     type = "email" 
@@ -83,7 +81,7 @@ export default class Login extends Component
                 /><br/><br/>
                 
                 <LinkInClass value="Login" className="green-button" onClick={this.handleSubmit}/> 
-                <Link className="red-button" to={"/DisplayAllCars"}>Cancel</Link>                                      
+                <Link className="red-button" to={"/ProductPage"}>Cancel</Link>                                      
             </form>
         )
     }

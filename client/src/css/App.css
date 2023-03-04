@@ -1,6 +1,33 @@
 .container {
   padding-top: 10px;
 }
+.itemContainer{
+ 
+    margin: 0 auto;
+    width: 25%;
+    max-width: 700px;
+    padding: 20px;
+    border:thin solid #aaaaaa;
+    border-radius: 5px;
+    background: #f7f7f7;
+    
+}
+.cards{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0 -10px;
+   
+}
+.itemContainer ul{
+
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    
+}
+
 
 .form-container,
 .table-container 
@@ -17,6 +44,7 @@
     margin-right: auto;
     border-radius: 5px;
     background: #f7f7f7;
+    display: flex;
 }
 
 
@@ -113,7 +141,7 @@ color:pink;
 
 .table-container tbody tr
 {
-    height:3em;
+    height:6em;
 }
 
 .table-container thead th,
@@ -136,3 +164,57 @@ color:pink;
     margin-top:1em;
 }
 /*end of table of cars */
+
+
+/* logged in user's profile photo */
+#profilePhoto
+{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: thin solid #aaa;
+    float:right;
+    background-size:contain;
+}
+/* end of logged in user's profile photo */
+
+
+.carPhotos
+{
+    overflow-x: auto;
+    white-space: nowrap;
+    min-width:18em;
+    max-width:18em;
+}
+
+.carPhotos img
+{
+    width:5em;
+    height:5em;
+    padding:0em;
+    margin:0em;
+    margin-right:0.5em;
+    border:thin solid #ccc;
+}
+
+
+.payPalMessage
+{
+    width:650px;    
+    margin-top:20px;
+    margin-left: auto;
+    margin-right: auto;
+    border:thin solid #666666;
+    border-radius: 50px;
+    padding:50px;    
+}
+
+#payPalPaymentIDButton
+{
+    margin-top:50px;
+}
+
+#payPalPaymentID
+{
+    font-weight: bold;
+}

@@ -18,7 +18,8 @@ export default class EditCar extends Component
             colour: ``,
             year: ``,
             price: ``,
-            redirectToDisplayAllCars:localStorage.accessLevel < ACCESS_LEVEL_NORMAL_USER
+            redirectToDisplayAllCars:localStorage.accessLevel < ACCESS_LEVEL_NORMAL_USER,
+            wasSubmittedAtLeastOnce:false
         }
     }
 
@@ -29,26 +30,16 @@ export default class EditCar extends Component
         axios.get(`${SERVER_HOST}/cars/${this.props.match.params.id}`, {headers:{"authorization":localStorage.token}})
         .then(res => 
         {     
-            if(res.data)
-            {
-                if (res.data.errorMessage)
-                {
-                    console.log(res.data.errorMessage)    
-                }
-                else
-                { 
-                    this.setState({
-                        model: res.data.model,
-                        colour: res.data.colour,
-                        year: res.data.year,
-                        price: res.data.price
-                    })
-                }
-            }
-            else
-            {
-                console.log(`Record not found`)
-            }
+            this.setState({
+                model: res.data.model,
+                colour: res.data.colour,
+                year: res.data.year,
+                price: res.data.price
+            })            
+        })
+        .catch(err => 
+        {
+            // do nothing
         })
     }
 
@@ -73,33 +64,30 @@ export default class EditCar extends Component
         axios.put(`${SERVER_HOST}/cars/${this.props.match.params.id}`, carObject, {headers:{"authorization":localStorage.token}})
         .then(res => 
         {             
-            if(res.data)
-            {
-                if (res.data.errorMessage)
-                {
-                    console.log(res.data.errorMessage)    
-                }
-                else
-                {      
-                    console.log(`Record updated`)
-                    this.setState({redirectToDisplayAllCars:true})
-                }
-            }
-            else
-            {
-                console.log(`Record not updated`)
-            }
+            this.setState({redirectToDisplayAllCars:true})
+        })
+        .catch(err => 
+        {
+            this.setState({wasSubmittedAtLeastOnce: true})
         })
     }
 
 
     render() 
     {
+        let errorMessage = "";
+        if(this.state.wasSubmittedAtLeastOnce)
+        {
+            errorMessage = <div className="error">Error: All fields must be filled in<br/></div>;
+        } 
+        
         return (
             <div className="form-container">
     
                 {this.state.redirectToDisplayAllCars ? <Redirect to="/DisplayAllCars"/> : null}  
-                        
+                    
+                {errorMessage}
+                
                 <Form>
                     <Form.Group controlId="model">
                         <Form.Label>Model</Form.Label>

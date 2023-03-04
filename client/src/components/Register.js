@@ -17,8 +17,10 @@ export default class Register extends Component
             name:"",
             email:"",
             password:"",
-            confirmPassword:"",    
-            isRegistered:false
+            confirmPassword:"", 
+            selectedFile:null,
+            isRegistered:false,
+            wasSubmittedAtLeastOnce:false
         } 
     }
     
@@ -28,45 +30,53 @@ export default class Register extends Component
         this.setState({[e.target.name]: e.target.value})
     }
     
+
+    handleFileChange = (e) => 
+    {
+        this.setState({selectedFile: e.target.files[0]})
+    }
+    
     
     handleSubmit = (e) => 
     {
         e.preventDefault()
 
-        axios.post(`${SERVER_HOST}/users/register/${this.state.name}/${this.state.email}/${this.state.password}`)
+        let formData = new FormData()  
+        if(this.state.selectedFile)
+        {
+            formData.append("profilePhoto", this.state.selectedFile, this.state.selectedFile.name)
+        }    
+        axios.post(`${SERVER_HOST}/users/register/${this.state.name}/${this.state.email}/${this.state.password}`, formData, {headers: {"Content-type": "multipart/form-data"}})
         .then(res => 
         {     
-            if(res.data)
-            {
-                if (res.data.errorMessage)
-                {
-                    console.log(res.data.errorMessage)    
-                }
-                else // user successfully registered
-                { 
-                    console.log("User registered and logged in")
+            localStorage.name = res.data.name
+            localStorage.accessLevel = res.data.accessLevel
+            localStorage.profilePhoto = res.data.profilePhoto                    
+            localStorage.token = res.data.token
                     
-                    localStorage.name = res.data.name
-                    localStorage.accessLevel = res.data.accessLevel                    
-                    localStorage.token = res.data.token
-                    
-                    this.setState({isRegistered:true})
-                }        
-            }
-            else
-            {
-                console.log("Registration failed")
-            }
+            this.setState({isRegistered:true})               
         })   
+        .catch(err =>
+        {
+            this.setState({wasSubmittedAtLeastOnce: true})            
+        })
     }
 
 
     render() 
     {     
+        let errorMessage = "";
+        if(this.state.wasSubmittedAtLeastOnce)
+        {
+            errorMessage = <div className="error">Error: All fields must be filled in<br/></div>;
+        }          
+    
         return (
             <form className="form-container" noValidate = {true} id = "loginOrRegistrationForm">
            
                 {this.state.isRegistered ? <Redirect to="/DisplayAllCars"/> : null} 
+            
+                {errorMessage}
             
                 <h2>New User Registration</h2>
            
@@ -106,6 +116,12 @@ export default class Register extends Component
                     autoComplete="confirmPassword"
                     value = {this.state.confirmPassword}
                     onChange = {this.handleChange}
+                /><br/>
+                
+                <input          
+                    name = "profilePhoto"    
+                    type = "file"                    
+                    onChange = {this.handleFileChange}
                 /><br/><br/>
                 
                 <LinkInClass value="Register New User" className="green-button" onClick={this.handleSubmit} />
