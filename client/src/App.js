@@ -16,6 +16,7 @@ import LoggedInRoute from "./components/LoggedInRoute"
 import BuyCar from "./components/BuyCar"
 import PayPalMessage from "./components/PayPalMessage"
 import ProductPage from "./components/ProductPage"
+import SeeMore from "./components/SeeMore"
 // import ProductCard from "./components/ProductCard"
 
 import {ACCESS_LEVEL_GUEST} from "./config/global_constants"
@@ -42,6 +43,7 @@ export default class App extends Component
                     <Route exact path="/" component={ProductPage} />
                     <Route exact path="/Login" component={Login} />
                     <Route exact path="/BuyCar/:id" component={BuyCar} />
+                    <Route exact path="/SeeMore/:id" component={SeeMore} />
                     <Route exact path="/PayPalMessage/:messageType/:payPalPaymentID" component={PayPalMessage}/>                     
                     <LoggedInRoute exact path="/Logout" component={Logout} />
                     <LoggedInRoute exact path="/AddCar" component={AddCar} />

@@ -6,7 +6,7 @@ import React, {Component} from "react"
 // import {ACCESS_LEVEL_GUEST, ACCESS_LEVEL_ADMIN, SERVER_HOST} from "../config/global_constants"
 
 // import BuyCar from "./BuyCar"
-
+import SeeMore from "./SeeMore"
 export default class ProdcutCard extends Component 
 {    
     constructor(props)
@@ -69,6 +69,7 @@ export default class ProdcutCard extends Component
                                        
                     {soldOrForSale}
                  </li>    */}
+                 <Link className ="read-more">Read More</Link>
 
                 </ul>
             </div>)}
