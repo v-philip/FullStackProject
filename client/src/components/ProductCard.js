@@ -54,7 +54,7 @@ export default class ProdcutCard extends Component
             <div className="cards">
             {this.props.products.map((product) =>
             <div className="itemContainer">
-                <img src={product.thumbnail} alt="product"/>
+                <img className = "card" src={product.thumbnail} alt="product"/>
                 <ul>
                 <li>{product.title}</li>
                 <li>{product.brand}</li>

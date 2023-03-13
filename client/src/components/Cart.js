@@ -16,7 +16,7 @@ export default class Cart extends component{
     }
 
     componentDidMount(){
-        axios.get(`${SERVER_HOST}/cart`, {headers:{"authorization":localStorage.token}})
+        axios.get(`${SERVER_HOST}/cart${this.props.params.id}`, {headers:{"authorization":localStorage.token}})
         .then(res => 
         {     
             this.setState({
