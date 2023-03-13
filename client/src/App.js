@@ -17,6 +17,7 @@ import BuyCar from "./components/BuyCar"
 import PayPalMessage from "./components/PayPalMessage"
 import ProductPage from "./components/ProductPage"
 import SeeMore from "./components/SeeMore"
+import Header from "./components/Header"
 // import ProductCard from "./components/ProductCard"
 
 import {ACCESS_LEVEL_GUEST} from "./config/global_constants"
@@ -36,7 +37,9 @@ export default class App extends Component
     render() 
     {
         return (
+
             <BrowserRouter>
+                <Header />
                 <Switch>
                     <Route exact path="/Register" component={Register} />
                     <Route exact path="/ResetDatabase" component={ResetDatabase} />                    

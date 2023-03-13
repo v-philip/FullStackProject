@@ -17,8 +17,7 @@ export default class Login extends Component
             password:"",
             isLoggedIn:false,
             wasSubmittedAtLeastOnce:false,
-            validEmail :false,
-            validPassword :false,
+            
         }
     }
         
@@ -33,23 +32,25 @@ export default class Login extends Component
     validateEmail = (email) => {
         var re = /\S+@\S+\.\S+/;
          re.test(email);
-        if(re.test(email)){
+        if(!re.test(email)){
             return(
           <div>The email is not valid</div>
         )}
         else {
-            this.setState({validEmail:true})}
+            }
     }
 
-    validateEmail = (password) => {
-        var re = /\S+@\S+\.\S+/;
+    validatePassword = (password) => {
+        //regex for password
+        //Minimum eight characters, at least one letter, one number and one special character:
+        var re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/;
          re.test(password);
-        if(re.test(email)){
+        if(!re.test(password)){
             return(
-          <div>The email is not valid</div>
+          <div>password is not valid</div>
         )}
         else {
-            this.setState({validEmail:true})}
+            }
     }
 
 

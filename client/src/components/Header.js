@@ -5,7 +5,7 @@ export default  class Header extends React.Component {
     return (
       <div className="header">
         <div className="logo">
-          <img src={require("../img/logo.jpg")} alt="logo" />
+          <img src={("../img/logo.jpg")} alt="logo" />
         </div>
         <div className="search-bar">
           <input type="text" placeholder="Search..." onChange={this.props.handelChange} />
@@ -15,7 +15,7 @@ export default  class Header extends React.Component {
           <button>Login/Sign Up</button>
         </div>
         <div className="cart">
-          <img src={require("../img/cart-icon.png")} alt="cart" />
+          <img src={("C:/nodejs_projects/paypal/client/cart-icon.jpg")} alt="cart" />
         </div>
       </div>
     );
