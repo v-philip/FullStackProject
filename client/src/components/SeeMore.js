@@ -12,9 +12,10 @@ export default class SeeMore extends Component
     {
         super(props)
         this.state =({
-            product : [],
+            product : null,
             flag :false,
-            id :""
+            //id which is passed in the url
+            
             })
 
     }
@@ -23,7 +24,7 @@ export default class SeeMore extends Component
 
     componentDidMount(){
     
-        axios.get(`${SERVER_HOST}/products/${this.id}`,)
+        axios.get(`${SERVER_HOST}/products/${this.props.match.params.id}`)
         .then(res => 
         {     
             this.setState({product: res.data,
@@ -63,6 +64,9 @@ export default class SeeMore extends Component
         var temp = (window.location.href.split("/")[4])
         console.log(temp)
         this.id = temp
+        var temp2 = this.props.match.params.id
+        console.log(temp2)
+        console.log(this.id)
         return (
         <>
 

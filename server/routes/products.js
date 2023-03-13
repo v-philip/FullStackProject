@@ -111,18 +111,34 @@ const getProdcutPhotoAsBase64 = (req, res, next) =>
 }
 
 
-const getProdcutDocument = (req, res, next) => 
+// const getProdcutDocument = (req, res, next) => 
+// {
+//     productsModel.findById(req.param.id, (err, data) => 
+//     {
+//         if(err)
+//         {
+//             return next(err)
+//         }  
+//         console.log(data) 
+//         return res.json(data)
+//     })
+// }
+
+//make a good route to get one product
+const getProdcutDocument = (req, res, next) =>
 {
-    productsModel.findById(req.params._id, (err, data) => 
+    productsModel.findById(req.params.id, (err, data) =>
     {
         if(err)
         {
             return next(err)
-        }  
-        
+        }
+        console.log(data)
         return res.json(data)
     })
 }
+
+
 
 
 const updateProductDocument = (req, res, next) => 
