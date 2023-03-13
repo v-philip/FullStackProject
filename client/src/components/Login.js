@@ -47,7 +47,7 @@ export default class Login extends Component
          re.test(password);
         if(!re.test(password)){
             return(
-          <div>password is not valid</div>
+          <div>password is not safe</div>
         )}
         else {
             }
