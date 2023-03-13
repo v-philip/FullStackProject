@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-// import {Link} from "react-router-dom"
+import {Link} from "react-router-dom"
 
 // import axios from "axios"
 
@@ -69,7 +69,7 @@ export default class ProdcutCard extends Component
                                        
                     {soldOrForSale}
                  </li>    */}
-                 <Link className ="read-more">Read More</Link>
+                 <Link className ="read-more" to={"/SeeMore/" + product._id} >Read More</Link>
 
                 </ul>
             </div>)}
