@@ -1,6 +1,6 @@
 import React, {Component} from "react"
 import {Link} from "react-router-dom"
-
+import {Redirect} from "react-router-dom"
 import axios from "axios"
 
 import ProductCard from "./ProductCard"
@@ -90,10 +90,13 @@ export default class ProductsPage extends Component
         return (           
             <div className="WholePage">
                 <div className="category">
-                    <ul>{this.state.category.map((cat) =><li><label value = {cat} class="container">{cat}
+                    <ul>{this.state.category.map((cat) =><li> 
+                        <button onClick={this.handleFilterChange} value = {cat}>{cat}</button>
+                        
+                        {/* <label value = {cat} className="container">{cat}
                                                                 <input type="checkbox" onClick={this.handleFilterChange} value = {cat}/>
-                                                                <span class="checkmark"></span>
-                                                            </label>
+                                                                <span className="checkmark"></span>
+                                                            </label> */}
                                                           </li>)}
                         
                     </ul>
@@ -101,22 +104,24 @@ export default class ProductsPage extends Component
                     
                 {
                     localStorage.accessLevel > ACCESS_LEVEL_GUEST 
-                    ? <div className="logout">
+                    ? <>
                         {
                             localStorage.profilePhoto !== "null" 
-                            ? <img id="profilePhoto" src={`data:;base64,${localStorage.profilePhoto}`} alt=""/>
+                             ? //<img onClick={<Redirect to="/User"/>}id="profilePhoto" src={`data:;base64,${localStorage.profilePhoto}`} alt=""/>
+                            
+                            <Link to="/User"><img id="profilePhoto" src={`data:;base64,${localStorage.profilePhoto}`} alt=""/></Link>
                             : null
                         }                        
-                        <Logout/>
-                      </div>
+                        
+                        </>
                     : <div>
-                        <Link className="green-button" to={"/Login"}>Login</Link>
+                        {/* <Link className="green-button" to={"/Login"}>Login</Link>
                         <Link className="blue-button" to={"/Register"}>Register</Link>  
-                        <Link className="red-button" to={"/ResetDatabase"}>Reset Database</Link>  
+                        <Link className="red-button" to={"/ResetDatabase"}>Reset Database</Link>   */}
                         <br/><br/><br/></div>
                 }
                 
-                {/* <div className="table-container"> */}
+                <div className="card-container">
                  <ProductCard products={this.state.selectedProducts}/>
                     {/* <CarTable products={this.state.products} />  */}
                         
@@ -127,7 +132,7 @@ export default class ProductsPage extends Component
                           </div>
                         : null
                     }
-                
+                </div> 
             </div> 
         )
     }

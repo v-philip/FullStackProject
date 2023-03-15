@@ -11,6 +11,8 @@ import Logout from "./components/Logout"
 import AddCar from "./components/AddCar"
 import EditCar from "./components/EditCar"
 import DeleteCar from "./components/DeleteCar"
+import EditProduct from "./components/EditProduct"
+import User from "./components/User"
 // import DisplayAllCars from "./components/DisplayAllCars"
 import LoggedInRoute from "./components/LoggedInRoute"
 import BuyCar from "./components/BuyCar"
@@ -18,6 +20,7 @@ import PayPalMessage from "./components/PayPalMessage"
 import ProductPage from "./components/ProductPage"
 import SeeMore from "./components/SeeMore"
 import Header from "./components/Header"
+import DeleteProduct from "./components/DeleteProduct"
 // import ProductCard from "./components/ProductCard"
 
 import {ACCESS_LEVEL_GUEST} from "./config/global_constants"
@@ -49,9 +52,11 @@ export default class App extends Component
                     <Route exact path="/SeeMore/:id" component={SeeMore} />
                     <Route exact path="/PayPalMessage/:messageType/:payPalPaymentID" component={PayPalMessage}/>                     
                     <LoggedInRoute exact path="/Logout" component={Logout} />
+                    <LoggedInRoute exact path="/User" component={User} />
                     <LoggedInRoute exact path="/AddCar" component={AddCar} />
                     <LoggedInRoute exact path="/EditCar/:id" component={EditCar} />
-                    <LoggedInRoute exact path="/DeleteCar/:id" component={DeleteCar} />
+                    <LoggedInRoute exact path="/EditProduct/:id" component={EditProduct} />
+                    <LoggedInRoute exact path="/DeleteProduct/:id" component={DeleteProduct} />
                     <Route exact path="/ProductPage" component={ProductPage}/> 
                     <Route path="*" component={ProductPage}/>                            
                 </Switch>
