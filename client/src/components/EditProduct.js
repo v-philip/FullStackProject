@@ -23,7 +23,7 @@ export default class EditProduct extends Component
             brand: ``,
             category: ``,
             thumnail: ``,
-            images: [],
+            images:[],
             redirectToDisplayAllCars:localStorage.accessLevel < ACCESS_LEVEL_NORMAL_USER,
             wasSubmittedAtLeastOnce:false
         }
@@ -107,52 +107,55 @@ export default class EditProduct extends Component
                     
                 {errorMessage}
                 
-                 <form>
-
+                <form>
+                    
                         <label>title</label>
                         <input ref = {(input) => { this.inputToFocus = input }} type="text" name="titel" value={this.state.title} onChange={this.handleChange} />
-
-
+                   
+                   
                         <label>description</label>
                         <textarea type="text" name="description" value={this.state.description} onChange={this.handleChange} />
+                    
 
-
-
+                    
                         <label>Price</label>
                         <input type="text" name="Price" value={this.state.price} onChange={this.handleChange} />
+                  
         
+                 
                         <label>Discount Percentage</label>
                         <input type="text" name="discountPercentage" value={this.state.discountPercentage} onChange={this.handleChange} />
+                   
+                    
                     
                         <label>Rating</label>
                         <input type="text" name="Rating" value={this.state.rating} onChange={this.handleChange} />
-
-
-
+                  
+                    
+             
                         <label>Stock</label>
                         <input type="text" name="stock" value={this.state.description} onChange={this.handleChange} />
+                 
 
-
-
+                 
                         <label>Brand</label>
                         <input type="text" name="brand" value={this.state.brand} onChange={this.handleChange} />
+                 
 
-
-
+                
                         <label>Category</label>
                         <input type="text" name="category" value={this.state.category} onChange={this.handleChange} />
-
-
+                 
+                   
 
                         <label>thumbnail</label>
                         <input type="text" name="colour" value={this.state.thumbnail} onChange={this.handleChange} />
-
-
-
+                    
+            
+               
                         <label>images</label>
                         <input type="text" name="colour" value={this.state.images} onChange={this.handleChange} />
-
-  
+                  
                     <LinkInClass value="Update" className="green-button" onClick={this.handleSubmit}/>  
     
                     <Link className="red-button" to={"/ProductPage"}>Cancel</Link>

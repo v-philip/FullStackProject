@@ -49,6 +49,7 @@ export default class ProdcutCard extends Component
         //     }
         // }
         
+        
         return (
             <>
             {this.props.products.map((product) =>
