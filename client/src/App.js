@@ -13,6 +13,7 @@ import EditCar from "./components/EditCar"
 import DeleteCar from "./components/DeleteCar"
 import EditProduct from "./components/EditProduct"
 import User from "./components/User"
+import Cart from "./components/Cart"
 // import DisplayAllCars from "./components/DisplayAllCars"
 import LoggedInRoute from "./components/LoggedInRoute"
 import BuyCar from "./components/BuyCar"
@@ -54,6 +55,7 @@ export default class App extends Component
                     <LoggedInRoute exact path="/Logout" component={Logout} />
                     <LoggedInRoute exact path="/User" component={User} />
                     <LoggedInRoute exact path="/AddCar" component={AddCar} />
+                    <LoggedInRoute exact path="/Cart" component={Cart} />
                     <LoggedInRoute exact path="/EditCar/:id" component={EditCar} />
                     <LoggedInRoute exact path="/EditProduct/:id" component={EditProduct} />
                     <LoggedInRoute exact path="/DeleteProduct/:id" component={DeleteProduct} />

@@ -15,6 +15,7 @@ export default class Login extends Component
         this.state = {
             email:"",
             password:"",
+            id:"",
             isLoggedIn:false,
             wasSubmittedAtLeastOnce:false,
             
@@ -66,6 +67,7 @@ export default class Login extends Component
             localStorage.profilePhoto = res.data.profilePhoto                        
             localStorage.token = res.data.token
             localStorage.email = res.data.email
+            localStorage.id = res.data._id
                     
             this.setState({isLoggedIn:true})
         }) 

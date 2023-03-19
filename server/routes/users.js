@@ -109,7 +109,7 @@ router.post(`/users/login/:email/:password`, (req,res) =>
                 {
                     const token = jwt.sign({email: data.email, accessLevel:data.accessLevel}, process.env.JWT_PRIVATE_KEY, {algorithm: 'HS256', expiresIn:process.env.JWT_EXPIRY})     
            
-                    res.json({name: data.name, accessLevel:data.accessLevel, token:token})
+                    res.json({name: data.name, accessLevel:data.accessLevel, token:token, _id:data._id})
                 }
                 else
                 {
@@ -130,8 +130,7 @@ router.post(`/users/logout`, (req,res) =>
 {       
     res.json({})
 })
-
-
+// router.get(`/products/:id`, getProductDocument)
 // router.get()
 
 module.exports = router

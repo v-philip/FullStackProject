@@ -17,6 +17,7 @@ export default  class Header extends React.Component {
         </ul>
         <div className="cart">
           <img src={("C:/nodejs_projects/paypal/client/cart-icon.jpg")} alt="cart" />
+          <Link to={"/Cart"}>Go to </Link>
         </div>
       </div>
     );

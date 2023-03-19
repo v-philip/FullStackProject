@@ -15,7 +15,7 @@ export default class SeeMore extends Component
             product : null,
             flag :false,
             //id which is passed in the url
-            
+            id : ""
             })
 
     }
@@ -37,18 +37,55 @@ export default class SeeMore extends Component
         })
     }
 
+    handleButtonClick(){
+        console.log(window.location.href.split("/")[4])
+        axios.post(`${SERVER_HOST}/cart/${localStorage.id}/${window.location.href.split("/")[4]}`, {headers:{"lessgooooo":window.location.href.split("/")[4]}})   
+
+        .then(res =>
+        {
+            console.log(res)
+        }
+        )
+        .catch(err =>
+        {
+            console.log(err)
+            console.log("error")
+        }
+        )
+    }
+
+    back(){ 
+
+    }
+
+    next(){ 
+
+    }
+    
+   
+
+
     displayProduct()
     { return(
-        <div>
-                <h1>Product Details</h1>
+        <div className="SeeMore">
+            <h1>Product Details</h1>
+            <div>
+                
                 <h2>{this.state.product.title}</h2>
+                {<div className ="ProdcutImage">
+            {this.state.product.images.map((item) => {return(<img src={item} alt="product" />)})}
+        </div>
+}
                 <h2>{this.state.product.brand}</h2>
                 <h2>{this.state.product.rating}</h2>
+                </div>
+                <div>
                 <h2>{this.state.product.price}</h2>
                 <h2>{this.state.product.description}</h2>
                 <h2>{this.state.product.category}</h2>
                 <h2>{this.state.product.image}</h2>
-                <button>Add to cart </button>
+                <button onClick={this.handleButtonClick}>Add to cart </button>
+                </div>
             </div>
             )
     }
@@ -63,12 +100,14 @@ export default class SeeMore extends Component
         console.log(this.state.product)
         var temp = (window.location.href.split("/")[4])
         console.log(temp)
-        this.id = temp
         var temp2 = this.props.match.params.id
         console.log(temp2)
         console.log(this.id)
+        
         return (
         <>
+
+
 
         {this.state.flag ? this.displayProduct() : null}
             

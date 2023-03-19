@@ -2,6 +2,7 @@ const router = require(`express`).Router()
 var createError = require('http-errors')
 
 const productsModel = require(`../models/products`)
+const mongoose = require(`mongoose`)
 
 const jwt = require('jsonwebtoken')
 const fs = require('fs')
@@ -84,8 +85,10 @@ const getAllProductDocuments = (req, res, next) =>
         if(err)
         {
             return next(err)
-        }     
+        }
+        console.log(data)     
         return res.json(data)
+
     })
 }
 
@@ -133,12 +136,33 @@ const getProdcutDocument = (req, res, next) =>
         {
             return next(err)
         }
-        console.log(data)
+        
         return res.json(data)
     })
 }
 
+const getMultiProdcutDocument = (req, res, next) =>
+{
+    var ids =[]
+    var porducts = {}
+    consle.log("req.body")
+    console.log(req.body)
+    ids.push(req.body)
+    console.log(ids)
+    for (var i = 0; i < ids.length; i++) {
+        var temp = mongoose.Types.ObjectId(ids[i])
+        productsModel.findById(temp, (err, data) =>
+        {
+            if(err)
+            {
+                return next(err)
+            }
+            porducts.push(data)
+            return res.json(porducts)
+        })
+    }
 
+}
 
 
 const updateProductDocument = (req, res, next) => 
@@ -178,7 +202,7 @@ router.get(`/products`, getAllProductDocuments)
 // Read one record
 router.get(`/products/:id`, getProdcutDocument)
 // router.get(`/products/:id`,  getProdcutDocument)
-
+router.get(`/products/multi/:id`, getMultiProdcutDocument)
 // Add new record
 // router.post(`/products`, verifyUsersJWTPassword, checkThatUserIsAnAdministrator, upload.array("carPhotos", parseInt(process.env.MAX_NUMBER_OF_UPLOAD_FILES_ALLOWED)), createNewProductDocument)
 
