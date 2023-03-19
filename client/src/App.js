@@ -8,7 +8,7 @@ import Register from "./components/Register"
 import ResetDatabase from "./components/ResetDatabase"
 import Login from "./components/Login"
 import Logout from "./components/Logout"
-import AddCar from "./components/AddCar"
+import AddProduct from "./components/AddProduct"
 import EditCar from "./components/EditCar"
 import DeleteCar from "./components/DeleteCar"
 import EditProduct from "./components/EditProduct"
@@ -54,7 +54,7 @@ export default class App extends Component
                     <Route exact path="/PayPalMessage/:messageType/:payPalPaymentID" component={PayPalMessage}/>                     
                     <LoggedInRoute exact path="/Logout" component={Logout} />
                     <LoggedInRoute exact path="/User" component={User} />
-                    <LoggedInRoute exact path="/AddCar" component={AddCar} />
+                    <LoggedInRoute exact path="/AddProduct" component={AddProduct} />
                     <LoggedInRoute exact path="/Cart" component={Cart} />
                     <LoggedInRoute exact path="/EditCar/:id" component={EditCar} />
                     <LoggedInRoute exact path="/EditProduct/:id" component={EditProduct} />

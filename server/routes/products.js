@@ -145,9 +145,9 @@ const getMultiProdcutDocument = (req, res, next) =>
 {
     var ids =[]
     var porducts = {}
-    consle.log("req.body")
-    console.log(req.body)
-    ids.push(req.body)
+    console.log("hello")
+    console.log(req.body.productId)
+    // ids.push(req.params.body)
     console.log(ids)
     for (var i = 0; i < ids.length; i++) {
         var temp = mongoose.Types.ObjectId(ids[i])

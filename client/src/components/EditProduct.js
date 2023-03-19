@@ -23,7 +23,7 @@ export default class EditProduct extends Component
             brand: ``,
             category: ``,
             thumnail: ``,
-            images: ``,
+            images:[],
             redirectToDisplayAllCars:localStorage.accessLevel < ACCESS_LEVEL_NORMAL_USER,
             wasSubmittedAtLeastOnce:false
         }
@@ -107,51 +107,59 @@ export default class EditProduct extends Component
                     
                 {errorMessage}
                 
-                <Form>
-                    <Form.Group controlId="model">
-                        <Form.Label>title</Form.Label>
-                        <Form.Control ref = {(input) => { this.inputToFocus = input }} type="text" name="model" value={this.state.title} onChange={this.handleChange} />
-                    </Form.Group>
+                <form>
+                    
+                        <label>title</label>
+                        <input ref = {(input) => { this.inputToFocus = input }} type="text" name="titel" value={this.state.title} onChange={this.handleChange} />
+                   
+                   
+                        <label>description</label>
+                        <textarea type="text" name="description" value={this.state.description} onChange={this.handleChange} />
+                    
 
-                    <Form.Group controlId="colour">
-                        <Form.Label>description</Form.Label>
-                        <Form.Control type="text" name="colour" value={this.state.description} onChange={this.handleChange} />
-                    </Form.Group>
-
-                    <Form.Group controlId="year">
-                        <Form.Label>Price</Form.Label>
-                        <Form.Control type="text" name="year" value={this.state.price} onChange={this.handleChange} />
-                    </Form.Group>
+                    
+                        <label>Price</label>
+                        <input type="text" name="Price" value={this.state.price} onChange={this.handleChange} />
+                  
         
-                    <Form.Group controlId="price">
-                        <Form.Label>Discount Percentage</Form.Label>
-                        <Form.Control type="text" name="price" value={this.state.discountPercentage} onChange={this.handleChange} />
-                    </Form.Group>
+                 
+                        <label>Discount Percentage</label>
+                        <input type="text" name="discountPercentage" value={this.state.discountPercentage} onChange={this.handleChange} />
+                   
                     
-                    <Form.Group controlId="colour">
-                        <Form.Label>Rating</Form.Label>
-                        <Form.Control type="text" name="colour" value={this.state.rating} onChange={this.handleChange} />
-                    </Form.Group>
                     
-                    <Form.Group controlId="colour">
-                        <Form.Label>Stock</Form.Label>
-                        <Form.Control type="text" name="colour" value={this.state.description} onChange={this.handleChange} />
-                    </Form.Group>
+                        <label>Rating</label>
+                        <input type="text" name="Rating" value={this.state.rating} onChange={this.handleChange} />
+                  
+                    
+             
+                        <label>Stock</label>
+                        <input type="text" name="stock" value={this.state.description} onChange={this.handleChange} />
+                 
 
-                    <Form.Group controlId="colour">
-                        <Form.Label>Brand</Form.Label>
-                        <Form.Control type="text" name="colour" value={this.state.description} onChange={this.handleChange} />
-                    </Form.Group>
+                 
+                        <label>Brand</label>
+                        <input type="text" name="brand" value={this.state.brand} onChange={this.handleChange} />
+                 
 
-                    <Form.Group controlId="colour">
-                        <Form.Label>Category</Form.Label>
-                        <Form.Control type="text" name="colour" value={this.state.description} onChange={this.handleChange} />
-                    </Form.Group>
-  
+                
+                        <label>Category</label>
+                        <input type="text" name="category" value={this.state.category} onChange={this.handleChange} />
+                 
+                   
+
+                        <label>thumbnail</label>
+                        <input type="text" name="colour" value={this.state.thumbnail} onChange={this.handleChange} />
+                    
+            
+               
+                        <label>images</label>
+                        <input type="text" name="colour" value={this.state.images} onChange={this.handleChange} />
+                  
                     <LinkInClass value="Update" className="green-button" onClick={this.handleSubmit}/>  
     
                     <Link className="red-button" to={"/ProductPage"}>Cancel</Link>
-                </Form>
+                </form>
             </div>
         )
     }

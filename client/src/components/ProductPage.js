@@ -102,24 +102,7 @@ export default class ProductsPage extends Component
                     </ul>
                 </div>
                     
-                {
-                    localStorage.accessLevel > ACCESS_LEVEL_GUEST 
-                    ? <>
-                        {
-                            localStorage.profilePhoto !== "null" 
-                             ? //<img onClick={<Redirect to="/User"/>}id="profilePhoto" src={`data:;base64,${localStorage.profilePhoto}`} alt=""/>
-                            
-                            <Link to="/User"><img id="profilePhoto" src={`data:;base64,${localStorage.profilePhoto}`} alt=""/></Link>
-                            : null
-                        }                        
-                        
-                        </>
-                    : <div>
-                        {/* <Link className="green-button" to={"/Login"}>Login</Link>
-                        <Link className="blue-button" to={"/Register"}>Register</Link>  
-                        <Link className="red-button" to={"/ResetDatabase"}>Reset Database</Link>   */}
-                        <br/><br/><br/></div>
-                }
+                
                 
                 <div className="card-container">
                  <ProductCard products={this.state.selectedProducts}/>
@@ -128,7 +111,7 @@ export default class ProductsPage extends Component
                     {
                         localStorage.accessLevel >= ACCESS_LEVEL_ADMIN 
                         ? <div className="add-new-car">
-                            <Link className="blue-button" to={"/AddCar"}>Add New Car</Link>
+                            <Link className="blue-button" to={"/AddProduct"}>Add New prodcut</Link>
                           </div>
                         : null
                     }
