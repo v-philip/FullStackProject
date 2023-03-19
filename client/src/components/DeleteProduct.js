@@ -5,7 +5,7 @@ import axios from "axios"
 import {SERVER_HOST} from "../config/global_constants"
 
 
-export default class DeleteCar extends Component 
+export default class DeleteProduct extends Component 
 {
     constructor(props) 
     {
@@ -19,7 +19,7 @@ export default class DeleteCar extends Component
     
     componentDidMount() 
     {   
-        axios.delete(`${SERVER_HOST}/cars/${this.props.match.params.id}`, {headers:{"authorization":localStorage.token}})
+        axios.delete(`${SERVER_HOST}/products/${this.props.match.params.id}`, {headers: {Authorization: localStorage.token}})
         .then(res => 
         {            
             this.setState({redirectToDisplayAllCars:true})            
@@ -35,7 +35,7 @@ export default class DeleteCar extends Component
     {
         return (
             <div>   
-                {this.state.redirectToDisplayAllCars ? <Redirect to="/DisplayAllCars"/> : null}                      
+                {this.state.redirectToDisplayAllCars ? <Redirect to="/ProductCard"/> : null}                      
             </div>
         )
     }

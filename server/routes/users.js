@@ -6,6 +6,31 @@ const bcrypt = require('bcryptjs')  // needed for password encryption
 
 const jwt = require('jsonwebtoken')
 
+// const checkThatUserIsAnAdministrator = (req, res, next) =>
+// {
+//     if(req.decodedToken.accessLevel >= process.env.ACCESS_LEVEL_ADMIN)
+//     {    
+//         return next()
+//     }
+//     else
+//     {
+//         return next(createError(401))
+//     }
+// }
+
+// const getAllProductDocuments = (req, res, next) => 
+// {   
+    
+//     //user does not have to be logged in to see car details
+//     productsModel.find((err, data) => 
+//     {       
+//         if(err)
+//         {
+//             return next(err)
+//         }     
+//         return res.json(data)
+//     })
+// }
 
 // IMPORTANT
 // Obviously, in a production release, you should never have the code below, as it allows a user to delete a database collection
@@ -16,7 +41,7 @@ router.post(`/users/reset_user_collection`, (req,res) =>
     {
         if(data)
         {
-            const adminPassword = `123!"£qweQWE`
+            const adminPassword = `hello123`
             bcrypt.hash(adminPassword, parseInt(process.env.PASSWORD_HASH_SALT_ROUNDS), (err, hash) =>  
             {
                 usersModel.create({name:"Administrator",email:"admin@admin.com",password:hash,accessLevel:parseInt(process.env.ACCESS_LEVEL_ADMIN)}, (createError, createData) => 
@@ -84,7 +109,7 @@ router.post(`/users/login/:email/:password`, (req,res) =>
                 {
                     const token = jwt.sign({email: data.email, accessLevel:data.accessLevel}, process.env.JWT_PRIVATE_KEY, {algorithm: 'HS256', expiresIn:process.env.JWT_EXPIRY})     
            
-                    res.json({name: data.name, accessLevel:data.accessLevel, token:token})
+                    res.json({name: data.name, accessLevel:data.accessLevel, token:token, _id:data._id})
                 }
                 else
                 {
@@ -105,6 +130,7 @@ router.post(`/users/logout`, (req,res) =>
 {       
     res.json({})
 })
-
+// router.get(`/products/:id`, getProductDocument)
+// router.get()
 
 module.exports = router

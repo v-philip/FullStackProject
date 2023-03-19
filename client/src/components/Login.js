@@ -15,15 +15,46 @@ export default class Login extends Component
         this.state = {
             email:"",
             password:"",
-            isLoggedIn:false
+            id:"",
+            isLoggedIn:false,
+            wasSubmittedAtLeastOnce:false,
+            
         }
     }
         
-    
+   
+
     handleChange = (e) => 
     {
         this.setState({[e.target.name]: e.target.value})
+        
     }
+
+    validateEmail = (email) => {
+        var re = /\S+@\S+\.\S+/;
+         re.test(email);
+        if(!re.test(email)){
+            return(
+          <div>The email is not valid</div>
+        )}
+        else {
+            }
+    }
+
+    validatePassword = (password) => {
+        //regex for password
+        //Minimum eight characters, at least one letter, one number and one special character:
+        var re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/;
+         re.test(password);
+        if(!re.test(password)){
+            return(
+          <div>password is not safe</div>
+        )}
+        else {
+            }
+    }
+
+
     
     
     handleSubmit = (e) => 
@@ -31,38 +62,39 @@ export default class Login extends Component
         axios.post(`${SERVER_HOST}/users/login/${this.state.email}/${this.state.password}`)
         .then(res => 
         {     
-            if(res.data)
-            {
-                if (res.data.errorMessage)
-                {
-                    console.log(res.data.errorMessage)    
-                }
-                else // user successfully logged in
-                { 
-                    console.log("User logged in")
+            localStorage.name = res.data.name
+            localStorage.accessLevel = res.data.accessLevel
+            localStorage.profilePhoto = res.data.profilePhoto                        
+            localStorage.token = res.data.token
+            localStorage.email = res.data.email
+            localStorage.id = res.data._id
                     
-                    localStorage.name = res.data.name
-                    localStorage.accessLevel = res.data.accessLevel  
-                    localStorage.token = res.data.token
-                    
-                    this.setState({isLoggedIn:true})
-                }        
-            }
-            else
-            {
-                console.log("Login failed")
-            }
-        })                
+            this.setState({isLoggedIn:true})
+        }) 
+        .catch(err =>
+        {
+            this.setState({wasSubmittedAtLeastOnce: true})
+        })
     }
 
 
     render()
-    {            
+    {         
+        let errorMessage = "";
+        if(this.state.wasSubmittedAtLeastOnce)
+        {
+            errorMessage = <div className="error">Login Details are incorrect<br/></div>;
+        }
+
+        {}
+        
         return (
             <form className="form-container" noValidate = {true} id = "loginOrRegistrationForm">
                 <h2>Login</h2>
                 
-                {this.state.isLoggedIn ? <Redirect to="/DisplayAllCars"/> : null} 
+                {this.state.isLoggedIn ? <Redirect to="/ProductPage"/> : null} 
+                
+                {errorMessage}
                 
                 <input 
                     type = "email" 
@@ -72,7 +104,7 @@ export default class Login extends Component
                     value={this.state.email} 
                     onChange={this.handleChange}
                 /><br/>
-                    
+                {this.validateEmail(this.state.email)}
                 <input 
                     type = "password" 
                     name = "password" 
@@ -81,9 +113,10 @@ export default class Login extends Component
                     value={this.state.password} 
                     onChange={this.handleChange}
                 /><br/><br/>
+                {this.validatePassword(this.state.password)}
                 
                 <LinkInClass value="Login" className="green-button" onClick={this.handleSubmit}/> 
-                <Link className="red-button" to={"/DisplayAllCars"}>Cancel</Link>                                      
+                <Link className="red-button" to={"/ProductPage"}>Cancel</Link>                                      
             </form>
         )
     }

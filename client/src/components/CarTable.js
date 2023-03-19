@@ -14,6 +14,7 @@ export default class CarTable extends Component
                         <th>Colour</th>
                         <th>Year</th>
                         <th>Price</th>
+                        <th>Photos</th>
                         <th> </th>
                     </tr>
                 </thead>
