@@ -17,7 +17,7 @@ export default class Cart extends Component {
             product: [],
             productIds: [],
             quantity: [],
-            total: 0,
+            total: 0,   
             individualTotal: [],
             loaded: false,
             test: "",
@@ -57,16 +57,31 @@ export default class Cart extends Component {
                 var temp1 = 0;
                 // console.log(formData) 
                 this.setState({ prod: formData })
-                axios.get(`${SERVER_HOST}/products/multi/id`, formData)
-                    .then(res => {
-                        this.setState({
-                            products: res.data,
-                            test: "hello"
+                // axios.get(`${SERVER_HOST}/products/multi/id`, formData)
+                //     .then(res => {
+                //         this.setState({
+                //             products: res.data,
+                //             test: "hello"
+                //         })
+                //     })
+                //     .catch(() => {
+                //         // do nothing
+                //     })
+                for (var i = 0; i < this.state.productIds.length; i++) {
+                    var temp = 0;
+                    axios.get(`${SERVER_HOST}/products/${this.state.productIds[i]}`)
+                        .then(res => {
+                            let temp = parseFloat(res.data.price) * parseFloat(this.state.quantity[i])
+                            this.setState({
+                                products: [...this.state.products, res.data],
+                                
+                            })
                         })
-                    })
-                    .catch(err => {
-                        // do nothing
-                    })
+                        .catch(err => {
+                            // do nothing
+                        })
+                }
+                
                 temp1 = formData.length
                 console.log(temp1)
                 this.hello()
@@ -132,6 +147,7 @@ export default class Cart extends Component {
 
 
     render() {
+        var total = 0;
         console.log(this.state.products)
         console.log(this.state.cart)
         console.log(this.state.product)
@@ -150,17 +166,17 @@ export default class Cart extends Component {
                 <div>
                     {this.state.products.map((item, iter) => <div>
                         { }
-                        <h1>bb{item.title}</h1>
+                        <h1>{item.title}</h1>
                         <h2>{item.brand}</h2>
-                        <h2>{item.rating}</h2>
                         <h2>{item.price}</h2>
                         <h2>{this.state.quantity[iter]}</h2>
-                        <h2>{this.state.individualTotal[iter]}</h2>{iter++}
+                        <h2>{item.price *this.state.quantity[iter]}</h2>
+                        {total += item.price * this.state.quantity[iter]}
                     </div>
 
                     )}
                     <h2>total</h2>
-                    <p>{this.state.total}</p>
+                    <h2>{total}</h2>
                 </div>
                 {/* // cart.map((item, index) => {
             //     <div>

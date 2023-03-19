@@ -71,6 +71,7 @@ export default class User extends Component
                     onChange = {this.handleFileChange}
                     
                 />
+                < button value ="submit" disabled={this.state.flag} onClick = {this.handleSubmit} >  </button>
                 <div className="logout"><Logout /></div>
                 <br/><br/>
 
