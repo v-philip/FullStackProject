@@ -40,40 +40,34 @@ const checkThatUserIsAnAdministrator = (req, res, next) =>
 }
 
 
-// const createNewProductDocument = (req, res, next) => 
-// {           
-//     // Use the new car details to create a new car document                
-//     let productDetails = new Object()
+const createNewProductDocument = (req, res, next) => 
+{           
+    // Use the new car details to create a new car document                
+    let productDetails = new Object()
                 
-//     productDetails.title = req.body.title
-//     productDetails.desription = req.body.desription
-//     productDetails.price = req.body.price
-//     productDetails.discountPercentage = req.body.discountPercentage
-//     productDetails.rating = req.body.rating
-//     productDetails.stock= req.body.stock
-//     productDetails.brand = req.body.brand
-//     productDetails.category = req.body.category
-//     productDetails.thumbnail = req.body.category
-//     productDetails.brand = req.body.brand
+    productDetails.title = req.body.title
+    productDetails.desription = req.body.desription
+    productDetails.price = req.body.price
+    productDetails.discountPercentage = req.body.discountPercentage
+    productDetails.rating = req.body.rating
+    productDetails.stock= req.body.stock
+    productDetails.brand = req.body.brand
+    productDetails.category = req.body.category
+    productDetails.thumbnail = req.body.category
+    productDetails.brand = req.body.brand
 
-//     // add the car's photos to the carDetails JSON object
-//     carDetails.photos = []
-                
-//     req.files.map((file, index) =>
-//     {
-//         carDetails.photos[index] = {filename:`${file.filename}`}
-//     })
+    productDetails.images =req.body.images
         
-//     productsModel.create(carDetails, (err, data) => 
-//     {
-//         if(err)
-//         {
-//             return next(err)
-//         }
+    productsModel.create(carDetails, (err, data) => 
+    {
+        if(err)
+        {
+            return next(err)
+        }
         
-//         return res.json(data)        
-//     })
-// }
+        return res.json(data)        
+    })
+}
 
 
 const getAllProductDocuments = (req, res, next) => 
@@ -146,7 +140,7 @@ const getMultiProdcutDocument = (req, res, next) =>
     var ids =[]
     var porducts = {}
     console.log("hello")
-    console.log(req.body.productId)
+    console.log(req.body)
     // ids.push(req.params.body)
     console.log(ids)
     for (var i = 0; i < ids.length; i++) {
@@ -204,7 +198,7 @@ router.get(`/products/:id`, getProdcutDocument)
 // router.get(`/products/:id`,  getProdcutDocument)
 router.get(`/products/multi/:id`, getMultiProdcutDocument)
 // Add new record
-// router.post(`/products`, verifyUsersJWTPassword, checkThatUserIsAnAdministrator, upload.array("carPhotos", parseInt(process.env.MAX_NUMBER_OF_UPLOAD_FILES_ALLOWED)), createNewProductDocument)
+ router.post(`/products`, verifyUsersJWTPassword, checkThatUserIsAnAdministrator, createNewProductDocument)
 
 // Update one record
 router.put(`/products/:id`, verifyUsersJWTPassword, updateProductDocument)

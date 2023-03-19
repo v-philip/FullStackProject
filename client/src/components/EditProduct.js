@@ -110,7 +110,7 @@ export default class EditProduct extends Component
                 <form>
                     
                         <label>title</label>
-                        <input ref = {(input) => { this.inputToFocus = input }} type="text" name="titel" value={this.state.title} onChange={this.handleChange} />
+                        <input ref = {(input) => { this.inputToFocus = input }} type="text" name="title" value={this.state.title} onChange={this.handleChange} />
                    
                    
                         <label>description</label>
