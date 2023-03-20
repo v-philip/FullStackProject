@@ -35,7 +35,7 @@ export default class BuyCar extends Component
         //funtction to send form data to serverdoe
         
         console.log(formData);
-        axios.post(`${SERVER_HOST}/sales/${paymentData.orderID}/${this.props.price}`,formData, {headers:{ "Content-type": "multipart/form-data"}})
+        axios.post(`${SERVER_HOST}/sales/${paymentData.orderID}/${this.props.price}/${localStorage.id}`,formData, {headers:{ "Content-type": "multipart/form-data"}})
         .then(res => 
         {                   
             this.setState({payPalMessageType:PayPalMessage.messageType.SUCCESS, 
@@ -43,6 +43,7 @@ export default class BuyCar extends Component
                            redirectToPayPalMessage:true}) 
             for (var i = 0; i < this.props.product.length; i++) {
                 axios.put(`${SERVER_HOST}/products/reduce/${this.props.product[i].productId}/${this.props.product[i].quantity}`, {headers:{"authorization":localStorage.token, "Content-type": "multipart/form-data"}})
+                axios.put(`${SERVER_HOST}/sales/${this.props.product[i].productId}/${this.props.product[i].quantity}/${this.state.payPalOrderID}`, {headers:{"authorization":localStorage.token, "Content-type": "multipart/form-data"}})
             }
             
         })

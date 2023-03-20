@@ -1,6 +1,7 @@
 const router = require(`express`).Router()
 var createError = require('http-errors')
 const usersModel = require(`../models/users`)
+const mongoose = require(`mongoose`)
 
 const bcrypt = require('bcryptjs')  // needed for password encryption
 
@@ -176,21 +177,21 @@ const emptyUsersCollection = (req, res, next) =>
 
 const addUserwithoutPictueToUsersCollection = (req, res, next) =>
 {
-    const adminPassword = `hello123`
-    bcrypt.hash(adminPassword, parseInt(process.env.PASSWORD_HASH_SALT_ROUNDS), (err, hash) =>  
+    const password= req.params.password
+    bcrypt.hash(password, parseInt(process.env.PASSWORD_HASH_SALT_ROUNDS), (err, hash) =>  
     {
         if(err)
         {
             return next(err)
         }
         
-        usersModel.create({name:"Administrator",email:"admin@admin.com",password:hash,accessLevel:parseInt(process.env.ACCESS_LEVEL_ADMIN)}, (err, data) => 
+        usersModel.create({name:req.params.name,email:req.params.email,password:hash}, (err, data) => 
         {
             if(err)
             {
                 return next(err)
             }
-            
+            const token = jwt.sign({email: data.email, accessLevel:data.accessLevel}, JWT_PRIVATE_KEY, {algorithm: 'HS256', expiresIn:process.env.JWT_EXPIRY}) 
             if(!data)
             {    
                 return next(createError(409,`Failed to create Admin user for testing purposes`))
@@ -198,7 +199,7 @@ const addUserwithoutPictueToUsersCollection = (req, res, next) =>
             
             emptyFolder(process.env.UPLOADED_FILES_FOLDER, false, (result) =>
             {
-                return res.json(data)
+                return res.json({name: data.name,profilePhotoFilename:"", accessLevel:data.accessLevel, token:token,email:data.email,id:data.id.toString()})
             })               
         })
     })
@@ -220,11 +221,11 @@ const returnUsersDetailsAsJSON = (req, res, next) =>
         
             if(data)
             {  
-                return res.json({name: req.data.name, accessLevel:req.data.accessLevel, profilePhoto:data, token:token})                           
+                return res.json({name: req.data.name, accessLevel:req.data.accessLevel, profilePhoto:data, token:token,email:req.data.email,id:req.data.id.toString()})                           
             }   
             else
             {
-                return res.json({name: req.data.name, accessLevel:req.data.accessLevel, profilePhoto:null, token:token})  
+                return res.json({name: req.data.name, accessLevel:req.data.accessLevel, profilePhoto:null, token:token,email:req.data.email,id:req.data.id.toString()})  
             }
         })     
     }
@@ -250,9 +251,38 @@ const putPhoto = (req, res, next) =>
             return next(err)
         }
             
-        return res.json({name: data.name, accessLevel:data.accessLevel, profilePhoto:fileData,})
+        return res.json(data)
     }))
 }
+
+const checkIfEmpty = (req, res, next) =>
+{
+    id = new mongoose.Types.ObjectId(req.params.id) 
+    usersModel.findById(id, (err, data) =>{
+        if(err)
+        {
+            return next(err)
+        }
+        if(data.profilePhotoFilename)
+        {
+            usersModel.findOneAndUpdate({_id:req.params.id}, {profilePhotoFilename:null}, (err, data) =>
+            {
+                if(err)
+                {
+                    return next(err)
+                }
+                return res.json(data)
+            }
+            )
+
+        }
+        else
+        {
+            return next()
+        }
+    })
+}
+
 
 
 // IMPORTANT
@@ -265,7 +295,7 @@ router.post(`/users/register/:name/:email/:password`, upload.single("profilePhot
 router.post(`/users/register/wpicture/:name/:email/:password`, checkThatUserIsNotAlreadyInUsersCollection, addUserwithoutPictueToUsersCollection)
 router.post(`/users/login/:email/:password`, checkThatUserExistsInUsersCollection, checkThatJWTPasswordIsValid, returnUsersDetailsAsJSON)
 
-router.put(`/users/photo/:id`,upload.single("profilePhoto"), checkThatFileIsUploaded, checkThatFileIsAnImageFile, checkThatUserExistsInUsersCollection, putPhoto)
+router.put(`/users/photo/:id`,checkIfEmpty,upload.single("profilePhoto"), checkThatFileIsUploaded, checkThatFileIsAnImageFile, checkThatUserExistsInUsersCollection, putPhoto,returnUsersDetailsAsJSON)
 
 router.post(`/users/logout`, logout)
 router.put(`/users/photo/:id`,putPhoto)
