@@ -176,11 +176,12 @@ export default class Cart extends Component {
 
         let flag = <div className="cart-empty">loading cart is empty</div>
         if(this.state.cart!=null)
+        
         {flag = <>
         <div className="cartContainer">
             {this.state.products.map((item, iter) => <div>
                 { }
-                <h1>CART</h1>
+               
                 <h2>{item.title}</h2>
                 <h2>{item.brand}</h2>
                 <h2>{item.price}</h2>
@@ -190,7 +191,7 @@ export default class Cart extends Component {
                 {total += item.price * this.state.quantity[iter]}
                 <h2>total</h2>
             <h2>{total}</h2>
-            <BuyProdcut product={this.state.product} price={total} />
+            
              </div>
              
 
@@ -206,6 +207,7 @@ export default class Cart extends Component {
         return (
             <>
             <Header/>
+            <h1>CART</h1>
                 {flag}
 
                 
@@ -216,6 +218,8 @@ export default class Cart extends Component {
             //         <h2>{item.rating}</h2>
             //         <h2>{item.price}</h2>
             //     </div> */}
+
+<BuyProdcut product={this.state.product} price={total} />
             </>
         )
 
