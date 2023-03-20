@@ -1,86 +1,115 @@
-import React, {Component} from "react"
-import {Link, Redirect} from "react-router-dom"
+import React, { Component } from "react";
+import { Link, Redirect } from "react-router-dom";
+import Header from "./Header";
+import axios from "axios";
+import { SERVER_HOST } from "../config/global_constants";
+import ProductCard from "./ProductCard";
+import Logout from "./Logout";
+import LinkInClass from "../components/LinkInClass";
 
-import axios from "axios"
-import {SERVER_HOST} from "../config/global_constants"
-import ProductCard from "./ProductCard"
-import Logout from "./Logout"
+export default class User extends Component {
+  constructor(props) {
+    super(props);
 
-export default class User extends Component
-{
-    constructor(props)
-    {
-        super(props)
-        
-            this.state={
-                profilePhoto: null,
-                name: localStorage.name,
-                email: localStorage.email,
-                password: "",
-                confirmPassword: "",
-                editProfile: false,
+    this.state = {
+      profilePhoto: null,
+      name: localStorage.name,
+      email: localStorage.email,
+      password: "",
+      confirmPassword: "",
+      editProfile: false,
+      flag: true,
+    };
+  }
 
-            }
-        
+  handleFileChange = (e) => {
+    this.setState({ selectedFile: e.target.files[0], flag: false });
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+
+    let formData = new FormData();
+    if (this.state.selectedFile) {
+      formData.append(
+        "profilePhoto",
+        this.state.selectedFile,
+        this.state.selectedFile.name
+      );
     }
+    axios
+      .put(`${SERVER_HOST}/users/photo/${localStorage.id}`, formData, {
+        headers: { "Content-type": "multipart/form-data" },
+      })
+      .then((res) => {
+        localStorage.name = res.data.name;
+        localStorage.accessLevel = res.data.accessLevel;
+        localStorage.profilePhoto = res.data.profilePhoto;
+        localStorage.token = res.data.token;
 
-    handleFileChange = (e) => 
-    {
-        this.setState({selectedFile: e.target.files[0]})
-    }
+        this.setState({ isRegistered: true });
+      })
+      .catch((err) => {
+        this.setState({ wasSubmittedAtLeastOnce: true });
+      });
+  };
 
+  render() {
+    return (
+      <>
+        <Header />
+        <div className="user-cards">
+          <div className="user-info">
+            <img src={`data:;base64,${localStorage.profilePhoto}`} alt="" />
+            <div
+              className="user-name"
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <h2>Username:</h2>
+              <h2>{localStorage.name}</h2>
+            </div>
+            <div
+              className="email-name"
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <h2>Email:</h2>
+              <h2>{localStorage.email}</h2>
+            </div>
+            <input
+              name="profilePhoto"
+              type="file"
+              onChange={this.handleFileChange}
+            />
 
-    handleSubmit = (e) => 
-    {
-        e.preventDefault()
+            <button value="submit" onClick={this.handleSubmit}>
+              {" "}
+              Remove Profile
+            </button>
 
-        let formData = new FormData()  
-        if(this.state.selectedFile)
-        {
-            formData.append("profilePhoto", this.state.selectedFile, this.state.selectedFile.name)
-        }    
-        axios.post(`${SERVER_HOST}/users/register/${this.state.name}/${this.state.email}/${this.state.password}`, formData, {headers: {"Content-type": "multipart/form-data"}})
-        .then(res => 
-        {     
-            localStorage.name = res.data.name
-            localStorage.accessLevel = res.data.accessLevel
-            localStorage.profilePhoto = res.data.profilePhoto                    
-            localStorage.token = res.data.token
-                    
-            this.setState({isRegistered:true})               
-        })   
-        .catch(err =>
-        {
-            this.setState({wasSubmittedAtLeastOnce: true})            
-        })
-    }
+            <Link className="red-button-1   " to={"/ProductPage"}>
+              Cancel
+            </Link>
 
-    render()
-        {
-        return (
-            <div className="user-cards">
-                <div className="user info">
-                    <img src={`data:;base64,${localStorage.profilePhoto}`}alt = ""/>
-                    <h1>Username</h1>
-                    <h2>{localStorage.name}</h2>
-                    <h1>Email</h1>
-                    <h2>{localStorage.email}</h2>
-                    <input          
-                    name = "profilePhoto"    
-                    type = "file"                    
-                    onChange = {this.handleFileChange}
-                    
-                />
-                <div className="logout"><Logout /></div>
-                <br/><br/>
-
-                </div>
-                <div className="infomation">
-
-                </div>
+            <div className="logout">
+              <Logout />
             </div>
 
-
-        )
-    }   
+            <br />
+            <br />
+          </div>
+          <div className="infomation"></div>
+        </div>
+      </>
+    );
+  }
 }

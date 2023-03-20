@@ -2,7 +2,7 @@ import React, {Component} from "react"
 import {Link} from "react-router-dom"
 import {Redirect} from "react-router-dom"
 import axios from "axios"
-
+import Header from "./Header"
 import ProductCard from "./ProductCard"
 import Logout from "./Logout"
 
@@ -81,13 +81,59 @@ export default class ProductsPage extends Component
             }
             this.setState({ selectedProducts: this.state.products.filter(product => this.state.selectedCategory.includes(product.category)) })
         }
+    }
+
+
+    handleSearchChange = e => {
+        if (e.target.value === "")
+        {
+            this.setState({ selectedProducts: this.state.products })
+        }
+        else
+        {
+            this.setState({ selectedProducts: this.state.products.filter(product => product.title.toUpperCase().includes(e.target.value.toUpperCase())|| product.brand.toUpperCase().includes(e.target.value.toUpperCase())) })
+        }
+    }
+
+    handelSortChange = e => {
+        if (e.target.value === "Price: Low to High")
+        {
+            this.setState({ selectedProducts: this.state.selectedProducts.sort((a, b) => a.price - b.price) })
+        }
+        else if (e.target.value === "Price: High to Low")
+        {
+            this.setState({ selectedProducts: this.state.selectedProducts.sort((a, b) => b.price - a.price) })
+        }
+        else if (e.target.value === "Name: A to Z")
+        {
+            this.setState({ selectedProducts: this.state.selectedProducts.sort((a, b) => a.title.localeCompare(b.title)) })
+        }
+        else if (e.target.value === "Name: Z to A")
+        {
+            this.setState({ selectedProducts: this.state.selectedProducts.sort((a, b) => b.title.localeCompare(a.title)) })
+        }
 
     }
+
 
   
     render() 
     {   console.log(this.state.selectedCategory)
-        return (           
+        return (  <>  
+            <Header />
+            <div className="search-bar">
+                <input type="text" placeholder="Search..." onChange={this.handleSearchChange} autofocus required />
+            </div>
+            
+            <div className="sort-bar">
+                <select onChange={this.handelSortChange}>
+                    <option value="Price: Low to High">Price: Low to High</option>
+                    <option value="Price: High to Low">Price: High to Low</option>
+                    <option value="Name: A to Z">Name: A to Z</option>
+                    <option value="Name: Z to A">Name: Z to A</option>
+                </select>
+            </div>
+            
             <div className="WholePage">
                 <div className="category">
                     <ul>{this.state.category.map((cat) =><li> 
@@ -117,6 +163,7 @@ export default class ProductsPage extends Component
                     }
                 </div> 
             </div> 
+            </>
         )
     }
 }

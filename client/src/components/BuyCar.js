@@ -40,6 +40,9 @@ export default class BuyCar extends Component
             this.setState({payPalMessageType:PayPalMessage.messageType.ERROR, 
                            redirectToPayPalMessage:true}) 
         })
+
+        axios.put(`${SERVER_HOST}/cars/${this.props.carID}`, {sold:true}, {headers:{"authorization":localStorage.token, "Content-type": "multipart/form-data"}})
+
     }
  
         

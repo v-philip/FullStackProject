@@ -2,6 +2,7 @@ import React, {Component} from "react"
 import Form from "react-bootstrap/Form"
 import {Redirect, Link} from "react-router-dom"
 import axios from "axios"
+import Header from "./Header";
 
 import LinkInClass from "../components/LinkInClass"
 
@@ -101,19 +102,21 @@ export default class EditProduct extends Component
         } 
         
         return (
-            <div className="form-container">
+            <>
+        <Header />
+            <div className="edit-form-container">
     
                 {this.state.redirectToDisplayAllCars ? <Redirect to="/ProductCard"/> : null}  
                     
                 {errorMessage}
                 
-                <form>
+                <form className="editForm">
                     
-                        <label>title</label>
-                        <input ref = {(input) => { this.inputToFocus = input }} type="text" name="titel" value={this.state.title} onChange={this.handleChange} />
+                        <label>Title</label>
+                        <input ref = {(input) => { this.inputToFocus = input }} type="text" name="title" value={this.state.title} onChange={this.handleChange} />
                    
                    
-                        <label>description</label>
+                        <label>Description</label>
                         <textarea type="text" name="description" value={this.state.description} onChange={this.handleChange} />
                     
 
@@ -161,6 +164,7 @@ export default class EditProduct extends Component
                     <Link className="red-button" to={"/ProductPage"}>Cancel</Link>
                 </form>
             </div>
+            </>
         )
     }
 }

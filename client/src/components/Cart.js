@@ -1,11 +1,12 @@
 import React, { Component } from "react"
 import { Redirect, Link } from "react-router-dom"
 import axios from "axios"
-
+import BuyProdcut from "./BuyProduct"
 import LinkInClass from "../components/LinkInClass"
 
 import { SERVER_HOST } from "../config/global_constants"
 import ProdcutCard from "./ProductCard"
+import Header from "./Header"
 // import cart from "../../../server/models/cart"
 
 export default class Cart extends Component {
@@ -17,7 +18,7 @@ export default class Cart extends Component {
             product: [],
             productIds: [],
             quantity: [],
-            total: 0,
+            total: 0,   
             individualTotal: [],
             loaded: false,
             test: "",
@@ -57,16 +58,31 @@ export default class Cart extends Component {
                 var temp1 = 0;
                 // console.log(formData) 
                 this.setState({ prod: formData })
-                axios.get(`${SERVER_HOST}/products/multi/id`, formData)
-                    .then(res => {
-                        this.setState({
-                            products: res.data,
-                            test: "hello"
+                // axios.get(`${SERVER_HOST}/products/multi/id`, formData)
+                //     .then(res => {
+                //         this.setState({
+                //             products: res.data,
+                //             test: "hello"
+                //         })
+                //     })
+                //     .catch(() => {
+                //         // do nothing
+                //     })
+                for (var i = 0; i < this.state.productIds.length; i++) {
+                    var temp = 0;
+                    axios.get(`${SERVER_HOST}/products/${this.state.productIds[i]}`)
+                        .then(res => {
+                            let temp = parseFloat(res.data.price) * parseFloat(this.state.quantity[i])
+                            this.setState({
+                                products: [...this.state.products, res.data],
+                                
+                            })
                         })
-                    })
-                    .catch(err => {
-                        // do nothing
-                    })
+                        .catch(err => {
+                            // do nothing
+                        })
+                }
+                
                 temp1 = formData.length
                 console.log(temp1)
                 this.hello()
@@ -108,6 +124,20 @@ export default class Cart extends Component {
         //             this.displayProduct = displayProduct
         //         }
     }
+
+    delete = (e) => {
+        
+        axios.delete(`${SERVER_HOST}/cart/delete/${localStorage.id}/${e}`, { headers: { "authorization": localStorage.token } })
+            .then(res => {
+                this.setState({
+                    cart: res.data
+                })
+            })
+            .catch(err => {
+                // do nothing
+            })
+    }
+
     // hello()
     // { 
     // for (var i = 0; i < this.state.productIds.length-1; i++) {
@@ -132,6 +162,7 @@ export default class Cart extends Component {
 
 
     render() {
+        var total = 0;
         console.log(this.state.products)
         console.log(this.state.cart)
         console.log(this.state.product)
@@ -143,25 +174,41 @@ export default class Cart extends Component {
         console.log(this.state.test)
         console.log(this.state.prod)
 
+        let flag = <div className="cart-empty">loading cart is empty</div>
+        if(this.state.cart!=null)
+        {flag = <>
+        <div className="cartContainer">
+            {this.state.products.map((item, iter) => <div>
+                { }
+                <h1>CART</h1>
+                <h2>{item.title}</h2>
+                <h2>{item.brand}</h2>
+                <h2>{item.price}</h2>
+                <h2>{this.state.quantity[iter]}</h2>
+                <h2>{item.price *this.state.quantity[iter]}</h2>
+                <button value={item._id} onClick={() => this.delete()}>delete</button>
+                {total += item.price * this.state.quantity[iter]}
+                <h2>total</h2>
+            <h2>{total}</h2>
+            <BuyProdcut product={this.state.product} price={total} />
+             </div>
+             
+
+            )}
+
+        </div>
+         
+             
+             </>
+        }
+
+
         return (
             <>
+            <Header/>
+                {flag}
 
-                <h1>cart</h1>
-                <div>
-                    {this.state.products.map((item, iter) => <div>
-                        { }
-                        <h1>bb{item.title}</h1>
-                        <h2>{item.brand}</h2>
-                        <h2>{item.rating}</h2>
-                        <h2>{item.price}</h2>
-                        <h2>{this.state.quantity[iter]}</h2>
-                        <h2>{this.state.individualTotal[iter]}</h2>{iter++}
-                    </div>
-
-                    )}
-                    <h2>total</h2>
-                    <p>{this.state.total}</p>
-                </div>
+                
                 {/* // cart.map((item, index) => {
             //     <div>
             //         <h1>{item.title}</h1>

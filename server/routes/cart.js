@@ -72,27 +72,42 @@ const addItemToCart = async(req, res, next) => {
 const removeItem = async (req, res) => {
     let userId = req.params.userId;
     let user = await User.exists({ _id: userId });
-    let productId = req.body.productId;
-  
-    if (!userId || !isValidObjectId(userId) || !user)
-      return res.status(400).send({ status: false, message: "Invalid user ID" });
-  
-    let cart = await Cart.findOne({ userId: userId });
-    if (!cart)
-      return res
-        .status(404)
-        .send({ status: false, message: "Cart not found for this user" });
-  
-    let itemIndex = cart.products.findIndex((p) => p.productId == productId);
-    if (itemIndex > -1) {
-      cart.products.splice(itemIndex, 1);
-      cart = await cart.save();
-      return res.status(200).send({ status: true, updatedCart: cart });
-    }
-    res
-      .status(400)
-      .send({ status: false, message: "Item does not exist in cart" });
+    let productId = req.params.productId;
+
+    Cart.findOne({ userId: userId }, (err, data) => {
+      if (err) return next(err);
+      else {
+        Cart.updateOne(
+          { userId: userId },
+          { $pull: { products: { productId: productId } } },
+          (err, data) => {
+            if (err) return next(err);
+            else {
+              return res.json(data);
+            }
+          }
+        );
+      }
+    });
   };
+
+  
+  //   let cart = await Cart.findOne({ userId: userId });
+  //   if (!cart)
+  //     return res
+  //       .status(404)
+  //       .send({ status: false, message: "Cart not found for this user" });
+  
+  //   let itemIndex = cart.products.findIndex((p) => p.productId == productId);
+  //   if (itemIndex > -1) {
+  //     cart.products.splice(itemIndex, 1);
+  //     cart = await cart.save();
+  //     return res.status(200).send({ status: true, updatedCart: cart });
+  //   }
+  //   res
+  //     .status(400)
+  //     .send({ status: false, message: "Item does not exist in cart" });
+  // };
 
 const getCart = async (req, res) => {
     let userI = req.params.user;
@@ -103,7 +118,7 @@ const getCart = async (req, res) => {
 
     if(flag)
     {
-      Cart.findOne((err,data)=>{
+      Cart.findOne({user:userId},(err,data)=>{
         if(err)
         return next(err);
         else{
@@ -184,6 +199,6 @@ const getCart = async (req, res) => {
   router.post("/cart/:user/:product", addItemToCart);
   router.get("/cart/:user", getCart);
   router.patch("/cart/:userId", decreaseQuantity);
-  router.delete("/cart/:userId", removeItem);
+  router.delete("/cart/delete/:userId/:productId", removeItem);
 
   module.exports = router;

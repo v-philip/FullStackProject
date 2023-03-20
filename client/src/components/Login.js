@@ -1,6 +1,7 @@
 import React, {Component} from "react"
 import {Redirect, Link} from "react-router-dom"
 import axios from "axios"
+import Header from "./Header"
 
 import LinkInClass from "../components/LinkInClass"
 import {SERVER_HOST} from "../config/global_constants"
@@ -67,7 +68,7 @@ export default class Login extends Component
             localStorage.profilePhoto = res.data.profilePhoto                        
             localStorage.token = res.data.token
             localStorage.email = res.data.email
-            localStorage.id = res.data._id
+            localStorage.id = res.data.id
                     
             this.setState({isLoggedIn:true})
         }) 
@@ -89,6 +90,8 @@ export default class Login extends Component
         {}
         
         return (
+            <>
+            <Header/>
             <form className="form-container" noValidate = {true} id = "loginOrRegistrationForm">
                 <h2>Login</h2>
                 
@@ -118,6 +121,7 @@ export default class Login extends Component
                 <LinkInClass value="Login" className="green-button" onClick={this.handleSubmit}/> 
                 <Link className="red-button" to={"/ProductPage"}>Cancel</Link>                                      
             </form>
+            </>
         )
     }
 }
