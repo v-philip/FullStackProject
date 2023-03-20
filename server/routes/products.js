@@ -46,19 +46,19 @@ const createNewProductDocument = (req, res, next) =>
     let productDetails = new Object()
                 
     productDetails.title = req.body.title
-    productDetails.desription = req.body.desription
+    productDetails.description = req.body.description
     productDetails.price = req.body.price
     productDetails.discountPercentage = req.body.discountPercentage
     productDetails.rating = req.body.rating
     productDetails.stock= req.body.stock
     productDetails.brand = req.body.brand
     productDetails.category = req.body.category
-    productDetails.thumbnail = req.body.category
-    productDetails.brand = req.body.brand
+    productDetails.thumbnail = req.body.thumbnail
+    productDetails.images = req.body.images
 
     productDetails.images =req.body.images
-        
-    productsModel.create(carDetails, (err, data) => 
+        console.log(productDetails)
+    productsModel.create(productDetails, (err, data) => 
     {
         if(err)
         {
@@ -80,7 +80,7 @@ const getAllProductDocuments = (req, res, next) =>
         {
             return next(err)
         }
-        console.log(data)     
+        
         return res.json(data)
 
     })
@@ -187,6 +187,21 @@ const deleteProdcutDocument = (req, res, next) =>
 }
 
 
+const reduceStock = (req, res, next) =>
+{
+    var id = req.params.id
+    var quantity = req.params.quantity
+    productsModel.findByIdAndUpdate(id, {$inc: {stock: -quantity}}, (err, data) =>
+    {
+        if(err)
+        {
+            return next(err)
+        }
+        return res.json(data)
+    })
+}
+
+
 // read all records
 router.get(`/products`, getAllProductDocuments)
 
@@ -202,6 +217,8 @@ router.get(`/products/multi/:id`, getMultiProdcutDocument)
 
 // Update one record
 router.put(`/products/:id`, verifyUsersJWTPassword, updateProductDocument)
+
+router.put(`/products/reduce/:id/:quantity`, reduceStock)
 
 // Delete one record
 router.delete(`/products/:id`, verifyUsersJWTPassword, checkThatUserIsAnAdministrator, deleteProdcutDocument)

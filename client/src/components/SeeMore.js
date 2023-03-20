@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 import {Redirect, Link} from "react-router-dom"
 import axios from "axios"
-
+import Header from "./Header"
 import LinkInClass from "../components/LinkInClass"
 
 import {SERVER_HOST} from "../config/global_constants"
@@ -14,6 +14,7 @@ export default class SeeMore extends Component
         this.state =({
             product : null,
             flag :false,
+            
             //id which is passed in the url
             id : ""
             })
@@ -64,9 +65,20 @@ export default class SeeMore extends Component
     
    
 
+    
 
     displayProduct()
-    { return(
+    { if(localStorage.accessLevel == 0){
+        var disabled = true
+    }
+    else{
+        var disabled = false
+    }
+    var temp = ''
+    if (disabled==true){   temp = <div>"You must be logged in to add to cart"</div>
+}
+
+         return(
         <div className="SeeMore">
             <h1>Product Details</h1>
             <div>
@@ -84,7 +96,8 @@ export default class SeeMore extends Component
                 <h2>{this.state.product.description}</h2>
                 <h2>{this.state.product.category}</h2>
                 <h2>{this.state.product.image}</h2>
-                <button onClick={this.handleButtonClick}>Add to cart </button>
+                <button disabled={disabled} onClick={this.handleButtonClick}>Add to cart </button>
+                {temp}
                 </div>
             </div>
             )
@@ -108,7 +121,7 @@ export default class SeeMore extends Component
         <>
 
 
-
+<Header/>
         {this.state.flag ? this.displayProduct() : null}
             
             <Link to="/products">Back to products</Link>

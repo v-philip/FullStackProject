@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 import {Redirect, Link} from "react-router-dom"
 import axios from "axios"
-
+import Header from "./Header"
 import LinkInClass from "../components/LinkInClass"
 
 import {SERVER_HOST} from "../config/global_constants"
@@ -45,7 +45,26 @@ export default class Register extends Component
         if(this.state.selectedFile)
         {
             formData.append("profilePhoto", this.state.selectedFile, this.state.selectedFile.name)
-        }    
+        }
+        if(formData.get("profilePhoto") == null){
+            axios.post(`${SERVER_HOST}/users/register/wpicture/${this.state.name}/${this.state.email}/${this.state.password}`, formData, {headers: {"Content-type": "multipart/form-data"}})
+            .then(res => 
+                {     
+                    localStorage.name = res.data.name
+                    localStorage.accessLevel = res.data.accessLevel
+                    localStorage.profilePhoto = res.data.profilePhoto                    
+                    localStorage.token = res.data.token
+                    localStorage.email = res.data.email
+                    localStorage.id = res.data.id
+                            
+                    this.setState({isRegistered:true})               
+                })   
+                .catch(err =>
+                {
+                    this.setState({wasSubmittedAtLeastOnce: true})            
+                })
+        } 
+        else if(formData.get("profilePhoto") !== null) {
         axios.post(`${SERVER_HOST}/users/register/${this.state.name}/${this.state.email}/${this.state.password}`, formData, {headers: {"Content-type": "multipart/form-data"}})
         .then(res => 
         {     
@@ -53,6 +72,8 @@ export default class Register extends Component
             localStorage.accessLevel = res.data.accessLevel
             localStorage.profilePhoto = res.data.profilePhoto                    
             localStorage.token = res.data.token
+            localStorage.email = res.data.email
+            localStorage.id = res.data.id
                     
             this.setState({isRegistered:true})               
         })   
@@ -60,6 +81,7 @@ export default class Register extends Component
         {
             this.setState({wasSubmittedAtLeastOnce: true})            
         })
+    }
     }
 
 
@@ -71,7 +93,8 @@ export default class Register extends Component
             errorMessage = <div className="error">Error: All fields must be filled in<br/></div>;
         }          
     
-        return (
+        return (<>
+            <Header/>
             <form className="form-container" noValidate = {true} id = "loginOrRegistrationForm">
            
                 {this.state.isRegistered ? <Redirect to="/DisplayAllCars"/> : null} 
@@ -127,6 +150,7 @@ export default class Register extends Component
                 <LinkInClass value="Register New User" className="green-button" onClick={this.handleSubmit} />
                 <Link className="red-button" to={"/DisplayAllCars"}>Cancel</Link>   
             </form>
+            </>
         )
     }
 }

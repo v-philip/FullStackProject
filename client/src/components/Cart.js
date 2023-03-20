@@ -1,11 +1,12 @@
 import React, { Component } from "react"
 import { Redirect, Link } from "react-router-dom"
 import axios from "axios"
-
+import BuyProdcut from "./BuyProduct"
 import LinkInClass from "../components/LinkInClass"
 
 import { SERVER_HOST } from "../config/global_constants"
 import ProdcutCard from "./ProductCard"
+import Header from "./Header"
 // import cart from "../../../server/models/cart"
 
 export default class Cart extends Component {
@@ -123,6 +124,20 @@ export default class Cart extends Component {
         //             this.displayProduct = displayProduct
         //         }
     }
+
+    delete = (e) => {
+        
+        axios.delete(`${SERVER_HOST}/cart/delete/${localStorage.id}/${e}`, { headers: { "authorization": localStorage.token } })
+            .then(res => {
+                this.setState({
+                    cart: res.data
+                })
+            })
+            .catch(err => {
+                // do nothing
+            })
+    }
+
     // hello()
     // { 
     // for (var i = 0; i < this.state.productIds.length-1; i++) {
@@ -159,25 +174,37 @@ export default class Cart extends Component {
         console.log(this.state.test)
         console.log(this.state.prod)
 
+        let flag = <div>loading cart is empty</div>
+        if(this.state.cart!=null)
+        {flag = <><h1>cart</h1>
+        <div>
+            {this.state.products.map((item, iter) => <div>
+                { }
+                <h1>{item.title}</h1>
+                <h2>{item.brand}</h2>
+                <h2>{item.price}</h2>
+                <h2>{this.state.quantity[iter]}</h2>
+                <h2>{item.price *this.state.quantity[iter]}</h2>
+                <button value={item._id} onClick={() => this.delete()}>delete</button>
+                {total += item.price * this.state.quantity[iter]}
+             </div>
+
+            )}
+            <h2>total</h2>
+            <h2>{total}</h2>
+        </div>
+         
+             <BuyProdcut product={this.state.product} price={total} />
+             </>
+        }
+
+
         return (
             <>
+            <Header/>
+                {flag}
 
-                <h1>cart</h1>
-                <div>
-                    {this.state.products.map((item, iter) => <div>
-                        { }
-                        <h1>{item.title}</h1>
-                        <h2>{item.brand}</h2>
-                        <h2>{item.price}</h2>
-                        <h2>{this.state.quantity[iter]}</h2>
-                        <h2>{item.price *this.state.quantity[iter]}</h2>
-                        {total += item.price * this.state.quantity[iter]}
-                    </div>
-
-                    )}
-                    <h2>total</h2>
-                    <h2>{total}</h2>
-                </div>
+                
                 {/* // cart.map((item, index) => {
             //     <div>
             //         <h1>{item.title}</h1>

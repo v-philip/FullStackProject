@@ -43,8 +43,9 @@ export default class App extends Component
         return (
 
             <BrowserRouter>
-                <Header />
+               
                 <Switch>
+                    
                     <Route exact path="/Register" component={Register} />
                     <Route exact path="/ResetDatabase" component={ResetDatabase} />                    
                     <Route exact path="/" component={ProductPage} />

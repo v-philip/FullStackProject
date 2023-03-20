@@ -2,7 +2,7 @@ import React, {Component} from "react"
 import Form from "react-bootstrap/Form"
 import {Redirect, Link} from "react-router-dom"
 import axios from "axios"
-
+import Header from "./Header"   
 import LinkInClass from "../components/LinkInClass"
 
 import {ACCESS_LEVEL_NORMAL_USER, SERVER_HOST} from "../config/global_constants"
@@ -22,7 +22,7 @@ export default class EditProduct extends Component
             stock: ``,
             brand: ``,
             category: ``,
-            thumnail: ``,
+            thumbnail: ``,
             images:[],
             redirectToDisplayAllCars:localStorage.accessLevel < ACCESS_LEVEL_NORMAL_USER,
             wasSubmittedAtLeastOnce:false
@@ -50,12 +50,12 @@ export default class EditProduct extends Component
             stock: this.state.stock,
             brand: this.state.brand,
             category: this.state.category,
-            thumnail: this.state.thumnail,
+            thumbnail: this.state.thumbnail,
             images: this.state.images
 
         }
 
-        axios.put(`${SERVER_HOST}/products/${this.props.match.params.id}`, productObject, {headers:{"authorization":localStorage.token}})
+        axios.post(`${SERVER_HOST}/products`, productObject, {headers:{"authorization":localStorage.token}})
         .then(res => 
         {             
             this.setState({redirectToDisplayAllCars:true})
@@ -75,7 +75,8 @@ export default class EditProduct extends Component
             errorMessage = <div className="error">Error: All fields must be filled in<br/></div>;
         } 
         
-        return (
+        return (<>
+        <Header/>
             <div className="form-container">
     
                 {this.state.redirectToDisplayAllCars ? <Redirect to="/ProductCard"/> : null}  
@@ -85,7 +86,7 @@ export default class EditProduct extends Component
                 <form>
                     
                         <label>title</label>
-                        <input ref = {(input) => { this.inputToFocus = input }} type="text" name="titel" placeholder="Title" onChange={this.handleChange} />
+                        <input ref = {(input) => { this.inputToFocus = input }} type="text" name="title" placeholder="Title" onChange={this.handleChange} />
                     
 
                         <lable>description</lable>
@@ -94,7 +95,7 @@ export default class EditProduct extends Component
 
                     
                         <label>Price</label>
-                        <input type="text" name="Price"  placeholder="price" onChange={this.handleChange} />
+                        <input type="text" name="price"  placeholder="price" onChange={this.handleChange} />
                     
         
                     
@@ -104,7 +105,7 @@ export default class EditProduct extends Component
                     
          
                         <label>Rating</label>
-                        <input type="number" name="Rating" placeholder="Rating" onChange={this.handleChange} />
+                        <input type="number" name="rating" placeholder="Rating" onChange={this.handleChange} />
                     
                   
                         <label>Stock</label>
@@ -121,18 +122,19 @@ export default class EditProduct extends Component
                    
         
                         <label>thumbnail</label>
-                        <input type="text" name="colour" placeholder="Thumbnail link" onChange={this.handleChange} />
+                        <input type="text" name="thumbnail" placeholder="Thumbnail link" onChange={this.handleChange} />
               
             
-          
+                       
                         <label>images</label>
-                        <input type="text" name="colour"  placeholder="Image link" onChange={this.handleChange} />
+                        <input type="text" name="images"  placeholder="Image link" onChange={this.handleChange} />
                
                     <LinkInClass value="Update" className="green-button" onClick={this.handleSubmit}/>  
     
                     <Link className="red-button" to={"/ProductPage"}>Cancel</Link>
                 </form>
             </div>
+            </>
         )
     }
 }

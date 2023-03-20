@@ -67,7 +67,7 @@ export default class Login extends Component
             localStorage.profilePhoto = res.data.profilePhoto                        
             localStorage.token = res.data.token
             localStorage.email = res.data.email
-            localStorage.id = res.data._id
+            localStorage.id = res.data.id
                     
             this.setState({isLoggedIn:true})
         }) 

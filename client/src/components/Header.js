@@ -10,13 +10,13 @@ export default  class Header extends React.Component {
           
           <Link  to={"/ProductPage"}><img src={("../img/logo.jpg")} alt="logo"  /></Link>
         </div> 
-        <ul>
-          <li><Link className="green-button" to={"/Login"}>Login</Link></li>
-          <li><Link className="blue-button" to={"/Register"}>Register</Link></li>  
+        {localStorage.accessLevel== 0 ? 
+          <li><Link className="green-button" to={"/Login"}>Login</Link></li> : null}
+        {localStorage.accessLevel == 0 ? <li><Link className="blue-button" to={"/Register"}>Register</Link></li> : null}
             
           {localStorage.accessLevel >= ACCESS_LEVEL_ADMIN ? <li><Link className="red-button" to={"/ResetDatabase"}>Reset Database</Link></li> : null}
-        </ul>
-        <div className="cart">
+        
+        
           
           <Link to={"/Cart"}><img src={("C:/nodejs_projects/paypal/client/cart-icon.jpg")} alt="cart" /> </Link>
 
@@ -28,7 +28,7 @@ export default  class Header extends React.Component {
                              ? //<img onClick={<Redirect to="/User"/>}id="profilePhoto" src={`data:;base64,${localStorage.profilePhoto}`} alt=""/>
                             
                             <Link to="/User"><img id="profilePhoto" src={`data:;base64,${localStorage.profilePhoto}`} alt=""/></Link>
-                            : null
+                            : <Link to="/User">profile</Link>
                         }                        
                         
                         </>
@@ -39,7 +39,7 @@ export default  class Header extends React.Component {
                         <br/><br/><br/></div>
                 }
         </div>
-      </div>
+      
     );
   }
 }

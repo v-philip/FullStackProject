@@ -2,7 +2,7 @@ import React, {Component} from "react"
 import {Link} from "react-router-dom"
 import {Redirect} from "react-router-dom"
 import axios from "axios"
-
+import Header from "./Header"
 import ProductCard from "./ProductCard"
 import Logout from "./Logout"
 
@@ -87,7 +87,8 @@ export default class ProductsPage extends Component
   
     render() 
     {   console.log(this.state.selectedCategory)
-        return (           
+        return (  <>  
+            <Header />
             <div className="WholePage">
                 <div className="category">
                     <ul>{this.state.category.map((cat) =><li> 
@@ -117,6 +118,7 @@ export default class ProductsPage extends Component
                     }
                 </div> 
             </div> 
+            </>
         )
     }
 }
