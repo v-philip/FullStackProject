@@ -18,7 +18,7 @@ export default  class Header extends React.Component {
         
         
           
-          <Link to={"/Cart"}><img src={("C:/nodejs_projects/paypal/client/cart-icon.jpg")} alt="cart" /> </Link>
+          <Link to={"/Cart"}><img src={("cart-icon.jpg")} alt="cart" /> </Link>
 
           {
                     localStorage.accessLevel > ACCESS_LEVEL_GUEST 
