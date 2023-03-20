@@ -1,6 +1,6 @@
 import React, {Component} from "react"
 import {Link, Redirect} from "react-router-dom"
-
+import Header from "./Header"
 import axios from "axios"
 import {SERVER_HOST} from "../config/global_constants"
 import ProductCard from "./ProductCard"
@@ -19,6 +19,7 @@ export default class User extends Component
                 password: "",
                 confirmPassword: "",
                 editProfile: false,
+                flag : true,
 
             }
         
@@ -26,7 +27,8 @@ export default class User extends Component
 
     handleFileChange = (e) => 
     {
-        this.setState({selectedFile: e.target.files[0]})
+        this.setState({selectedFile: e.target.files[0],flag : false})
+        
     }
 
 
@@ -39,7 +41,7 @@ export default class User extends Component
         {
             formData.append("profilePhoto", this.state.selectedFile, this.state.selectedFile.name)
         }    
-        axios.post(`${SERVER_HOST}/users/register/${this.state.name}/${this.state.email}/${this.state.password}`, formData, {headers: {"Content-type": "multipart/form-data"}})
+        axios.put(`${SERVER_HOST}/users/photo/${localStorage.id}`, formData, {headers: {"Content-type": "multipart/form-data"}})
         .then(res => 
         {     
             localStorage.name = res.data.name
@@ -57,10 +59,11 @@ export default class User extends Component
 
     render()
         {
-        return (
+        return (<>
+        <Header/>
             <div className="user-cards">
                 <div className="user info">
-                    <img src={`data:;base64,${localStorage.profilePhoto}`}alt = ""/>
+                    <img src={`data:;base64,${localStorage.profilePhoto}`}alt = "" />
                     <h1>Username</h1>
                     <h2>{localStorage.name}</h2>
                     <h1>Email</h1>
@@ -71,7 +74,7 @@ export default class User extends Component
                     onChange = {this.handleFileChange}
                     
                 />
-                < button value ="submit" disabled={this.state.flag} onClick = {this.handleSubmit} >  </button>
+                <button value ="submit" onClick = {this.handleSubmit} >  </button>
                 <div className="logout"><Logout /></div>
                 <br/><br/>
 
@@ -81,7 +84,7 @@ export default class User extends Component
                 </div>
             </div>
 
-
+            </>
         )
     }   
 }
