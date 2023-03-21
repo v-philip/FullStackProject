@@ -64,10 +64,10 @@ export default class ProdcutCard extends Component
                     {this.props.car.photos.map(photo => <img key={photo._id} id={photo._id} alt=""/>)}
                 </li>            */}
                  <li>
-                     {localStorage.accessLevel > ACCESS_LEVEL_GUEST ? <Link className="green-button" to={"/EditProduct/" + product._id}>Edit</Link> : null}
+                     {localStorage.accessLevel == ACCESS_LEVEL_ADMIN ? <Link className="green-button" to={"/EditProduct/" + product._id}>Edit</Link> : null}
                     
-                    {localStorage.accessLevel >= ACCESS_LEVEL_ADMIN ? <Link className="red-button" to={"/DeleteProduct/" + product._id}>Delete</Link> : null}                       
-                    {localStorage.accessLevel >= ACCESS_LEVEL_ADMIN ? <li>{product.stock}</li> : null}                  
+                    {localStorage.accessLevel == ACCESS_LEVEL_ADMIN ? <Link className="red-button" to={"/DeleteProduct/" + product._id}>Delete</Link> : null}                       
+                    {localStorage.accessLevel == ACCESS_LEVEL_ADMIN ? <li>{product.stock}</li> : null}                  
                     {/* {soldOrForSale} */}
                  </li>   
                  <Link className ="button" to={"/SeeMore/" + product._id} >Read More</Link>

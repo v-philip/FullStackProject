@@ -216,7 +216,7 @@ const returnUsersDetailsAsJSON = (req, res, next) =>
         {        
             if(err)
             {
-                return next(err)
+                return res.json({name: req.data.name, accessLevel:req.data.accessLevel, profilePhoto:null, token:token,email:req.data.email,id:req.data.id.toString()})
             }
         
             if(data)
