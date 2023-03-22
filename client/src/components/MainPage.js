@@ -7,6 +7,10 @@ import axios from "axios"
 import CarTable from "./CarTable"
 import Logout from "./Logout"
 export default class MainPage extends Component  {
+
+
+
+  
   render() {
     return (
       <div className="main-body">
