@@ -16,7 +16,7 @@ const createNewSaleDocument = (req, res, next) =>
     saleDetails.total = req.params.price
     saleDetails.user = req.params.id
      
-    console.log(saleDetails)
+    console.log(saleDetails)    
     console.log(products)
 
     

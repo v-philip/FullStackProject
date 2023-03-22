@@ -93,7 +93,7 @@ export default class User extends Component {
 
             <button value="submit" onClick={this.handleSubmit}>
               {" "}
-              Remove Profile
+            Add Phooto
             </button>
 
             <Link className="red-button-1   " to={"/ProductPage"}>

@@ -90,7 +90,34 @@ const checkThatUserIsNotAlreadyInUsersCollection = (req, res, next) =>
     
     return next()
 }
+const checkIfEmpty = (req, res, next) =>
+{
+    id = new mongoose.Types.ObjectId(req.params.id) 
+    usersModel.findById(id, (err, data) =>{
+        if(err)
+        {
+            return next(err)
+        }
+        if(data.profilePhotoFilename!=null)
+        {
+            usersModel.findOneAndUpdate({_id:req.params.id}, {profilePhotoFilename:null}, (err, data) =>
+            {
+                if(err)
+                {
+                    return next(err)
+                }
+                return next(data)
+            }
+            )
 
+        }
+        else
+        {
+            return next()
+        }
+    })
+    
+}
 
 const addNewUserToUsersCollection = (req, res, next) =>
 {
@@ -208,7 +235,7 @@ const addUserwithoutPictueToUsersCollection = (req, res, next) =>
 
 const returnUsersDetailsAsJSON = (req, res, next) =>
 {
-    const token = jwt.sign({email: req.data.email, accessLevel:req.data.accessLevel}, JWT_PRIVATE_KEY, {algorithm: 'HS256', expiresIn:process.env.JWT_EXPIRY})     
+        
 
     if(req.data.profilePhotoFilename)
     {
@@ -216,22 +243,22 @@ const returnUsersDetailsAsJSON = (req, res, next) =>
         {        
             if(err)
             {
-                return res.json({name: req.data.name, accessLevel:req.data.accessLevel, profilePhoto:null, token:token,email:req.data.email,id:req.data.id.toString()})
+                return res.json({name: req.data.name, accessLevel:req.data.accessLevel, profilePhoto:null,email:req.data.email,id:req.data.id.toString()})
             }
         
             if(data)
             {  
-                return res.json({name: req.data.name, accessLevel:req.data.accessLevel, profilePhoto:data, token:token,email:req.data.email,id:req.data.id.toString()})                           
+                return res.json({name: req.data.name, accessLevel:req.data.accessLevel, profilePhoto:data,email:req.data.email,id:req.data.id.toString()})                           
             }   
             else
             {
-                return res.json({name: req.data.name, accessLevel:req.data.accessLevel, profilePhoto:null, token:token,email:req.data.email,id:req.data.id.toString()})  
+                return res.json({name: req.data.name, accessLevel:req.data.accessLevel, profilePhoto:null,email:req.data.email,id:req.data.id.toString()})  
             }
         })     
     }
     else
     {
-        return res.json({name: req.data.name, accessLevel:req.data.accessLevel, profilePhoto:null, token:token,email:req.data.email, id:req.data.id.toString()})  
+        return res.json({name: req.data.name, accessLevel:req.data.accessLevel, profilePhoto:null,email:req.data.email, id:req.data.id.toString()})  
     }    
 }
 
@@ -251,37 +278,11 @@ const putPhoto = (req, res, next) =>
             return next(err)
         }
             
-        return res.json(data)
     }))
+    return next()
 }
 
-const checkIfEmpty = (req, res, next) =>
-{
-    id = new mongoose.Types.ObjectId(req.params.id) 
-    usersModel.findById(id, (err, data) =>{
-        if(err)
-        {
-            return next(err)
-        }
-        if(data.profilePhotoFilename)
-        {
-            usersModel.findOneAndUpdate({_id:req.params.id}, {profilePhotoFilename:null}, (err, data) =>
-            {
-                if(err)
-                {
-                    return next(err)
-                }
-                return res.json(data)
-            }
-            )
 
-        }
-        else
-        {
-            return next()
-        }
-    })
-}
 
 
 
@@ -295,7 +296,7 @@ router.post(`/users/register/:name/:email/:password`, upload.single("profilePhot
 router.post(`/users/register/wpicture/:name/:email/:password`, checkThatUserIsNotAlreadyInUsersCollection, addUserwithoutPictueToUsersCollection)
 router.post(`/users/login/:email/:password`, checkThatUserExistsInUsersCollection, checkThatJWTPasswordIsValid, returnUsersDetailsAsJSON)
 
-router.put(`/users/photo/:id`,checkIfEmpty,upload.single("profilePhoto"), checkThatFileIsUploaded, checkThatFileIsAnImageFile, checkThatUserExistsInUsersCollection, putPhoto,returnUsersDetailsAsJSON)
+router.put(`/users/photo/:id`,checkIfEmpty,upload.single("profilePhoto"), checkThatFileIsUploaded, checkThatFileIsAnImageFile, putPhoto,returnUsersDetailsAsJSON)
 
 router.post(`/users/logout`, logout)
 router.put(`/users/photo/:id`,putPhoto)
